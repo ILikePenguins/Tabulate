@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    
+     <EditText
+        android:id="@+id/etBeerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:text="Beername" />
+    
+      <TextView
+        android:id="@+id/tvBeerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:text="name" />
+
+    <TextView
+        android:id="@+id/tvBeerCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/etBeerName"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:text="cost" />
+
+    <EditText
+        android:id="@+id/etBeerQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/etBeerCost"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etBeerCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvBeerCost"
+        android:layout_alignBottom="@+id/tvBeerCost"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/tvBeerQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/etBeerQuantity"
+        android:layout_alignBottom="@+id/etBeerQuantity"
+        android:layout_alignParentLeft="true"
+        android:ems="10"
+        android:text="quantity" />
+
+</RelativeLayout>
