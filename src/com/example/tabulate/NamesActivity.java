@@ -1,12 +1,16 @@
 package com.example.tabulate;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import database.Database;
+import database.JSONParser;
 
 
 import android.support.v7.app.ActionBarActivity;
@@ -33,6 +37,7 @@ public class NamesActivity extends Activity {
 private EditText etName ;
 private ArrayAdapter<String>   adapter;
 private ArrayList<String> list = new ArrayList<String>();
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,11 @@ private ArrayList<String> list = new ArrayList<String>();
         ListView  lv=(ListView)findViewById(R.id.name_list);  
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
+        
+         new Database ("customers/get_customers.php").execute();
+        
+        
+       
     }
     class AddPersonListener implements OnClickListener
     {
@@ -68,7 +78,10 @@ private ArrayList<String> list = new ArrayList<String>();
     	            etName.setText("");
     	            
     	            //add to database
-    	            new CreateNewCustomer(input).execute();
+    	            LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
+    	            map.put("name", input);
+    	            new Database(map,"customers/create_customer.php").execute();
+    	            //new CreateNewCustomer(input).execute();
     	        }
     	    }
     }
@@ -107,7 +120,7 @@ private ArrayList<String> list = new ArrayList<String>();
 	    	//get name of person clicked on
 	        System.out.println("name "+parent.getItemAtPosition(position).toString());
 	        //start map view
-	        Intent profileIntent = new Intent(NamesActivity.this,ProfileActivity2.class);
+	        Intent profileIntent = new Intent(NamesActivity.this,ProfileActivity.class);
 	        //loads map if it is not loaded already
 	        profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	      //pass values to the map activity
@@ -117,51 +130,6 @@ private ArrayList<String> list = new ArrayList<String>();
 	    }
 
 	}
-    
-    class CreateNewCustomer  extends AsyncTask<String, String, String> 
-    {
-    	String name;
-    	 JSONParser jsonParser = new JSONParser();//**********************//
-    	 String createCustomerUrl="http://192.168.1.9:8080/android_connect/create_customer.php";
-    	public CreateNewCustomer(String n)
-    	{
-    		name=n;
-    	}
-		protected String doInBackground(String... arg0) 
-		{
-			 // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("name", name));
-			  // getting JSON Object
-            // Note that create product url accepts POST method
-            JSONObject json = jsonParser.makeHttpRequest(createCustomerUrl,
-                    "POST", params);
-            Log.d("Create Response", json.toString());
-            System.out.println("sasdasd");
-            // check for success tag
-            try {
-                int success = json.getInt("success");
- 
-                if (success == 1) {
-                    // successfully created product
-                   // Intent i = new Intent(getApplicationContext(), AllProductsActivity.class);
-                    //startActivity(i);
-                		System.out.println("success!");
-                    // closing this screen
-                    finish();
-                } else {
-                    // failed to create product
-                	System.out.println("fail");
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            
-			return null;
-		}
-    
-    
-    }
     
 
     public boolean onCreateOptionsMenu(Menu menu) {

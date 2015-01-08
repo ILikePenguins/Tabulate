@@ -1,10 +1,10 @@
 package com.example.tabulate;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
-import com.example.tabulate.NamesActivity.AddPersonListener;
-import com.example.tabulate.NamesActivity.OnItemClickListenerListViewItem;
-import com.example.tabulate.NamesActivity.RemovePersonListener;
+
+import database.Database;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,7 +25,6 @@ public class InventoryActivity extends Activity
 {
 	private ArrayAdapter<String>   adapter;
 	private ArrayList<String> list = new ArrayList<String>();
-	private EditText etName ;
 	protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -84,6 +83,12 @@ public AlertDialog form()
         	adapter.add(beer);
             dialog.dismiss();
             System.out.println(beer);
+            LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
+            map.put("name", nameBox.getText().toString());
+            map.put("quantity", beerQuantity.getText().toString());
+            map.put("cost", beerCost.getText().toString());
+            
+            new Database(map,"add_bottle.php").execute();
         }
     });
     //cancel button
@@ -98,4 +103,9 @@ public AlertDialog form()
     AlertDialog dialog = builder.create();
     return builder.create();
 }
+
+
+
+
+
 }

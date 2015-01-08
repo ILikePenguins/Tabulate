@@ -1,4 +1,4 @@
-package com.example.tabulate;
+package database;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class JSONParser {
  
     static InputStream is = null;
     static JSONObject jObj = null;
-    static String json = "";
+    String json = "";
  
     // constructor
     public JSONParser() {
@@ -34,7 +34,7 @@ public class JSONParser {
  
     // function get json from url
     // by making HTTP POST or GET mehtod
-    public JSONObject makeHttpRequest(String url, String method,
+    public String makeHttpRequest(String url, String method,
             List<NameValuePair> params) {
  
         // Making HTTP request
@@ -48,12 +48,9 @@ public class JSONParser {
                 HttpPost httpPost = new HttpPost(url);
                 
                 httpPost.setEntity(new UrlEncodedFormEntity(params));
-                System.out.println("beg");
                 HttpResponse httpResponse = httpClient.execute(httpPost);
-                System.out.println("mid:");
                 HttpEntity httpEntity = httpResponse.getEntity();
                 is = httpEntity.getContent();
-                System.out.println("last");
             }else if(method == "GET"){
                 // request method is GET
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -78,30 +75,34 @@ public class JSONParser {
         }
  
         try {
-        	System.out.println("wasdas");
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     is, "iso-8859-1"), 8);
             StringBuilder sb = new StringBuilder();
             String line = null;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 sb.append(line + "\n");
+             
+               // System.out.println(line);
+                json = line;
             }
             is.close();
-            json = sb.toString();
-            System.out.println("sB: "+sb.toString());
+            
+         //   System.out.println("sB: "+sb.toString());
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }
  
-        // try parse the string to a JSON object
-        try {
-            jObj = new JSONObject(json);
-        } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
-        }
- 
+//        // try parse the string to a JSON object
+//        try {
+//        	  System.out.println("obj ");
+//            jObj = new JSONObject(json);
+//        } catch (JSONException e) {
+//            Log.e("JSON Parser", "Error parsing data " + e.toString());
+//        }
+        System.out.println(json);
         // return JSON String
-        return jObj;
+        return json;
  
     }
 }
