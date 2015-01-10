@@ -2,24 +2,14 @@ package com.example.tabulate;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import database.AsyncResponse;
 import database.Database;
-import database.JSONParser;
 
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,14 +19,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 
-public class NamesActivity extends Activity {
+public class NamesActivity extends Activity implements AsyncResponse {
 private EditText etName ;
 private ArrayAdapter<String>   adapter;
 private ArrayList<String> list = new ArrayList<String>();
+
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -59,12 +49,17 @@ private ArrayList<String> list = new ArrayList<String>();
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
         
-         new Database ("customers/get_customers.php").execute();
-        
-        
+         //new Database ("customers/get_customers.php",this).execute();
+         new Database ("customers/get_customers.php",this).execute();
+       //DatabaseRead read= new DatabaseRead("customers/get_customers.php");
+      // read.accessPHP();
+     //  read.parseNames(read.accessPHP());
        
     }
-    class AddPersonListener implements OnClickListener
+    public ArrayAdapter<String> getAdapter() {
+		return adapter;
+	}
+	class AddPersonListener implements OnClickListener
     {
 
     	  public void onClick(View v)
@@ -148,4 +143,27 @@ private ArrayList<String> list = new ArrayList<String>();
         }
         return super.onOptionsItemSelected(item);
     }
+	public void processFinish(String output)
+	{
+		parseNames(output);
+	}
+	
+	
+	public void parseNames(String response)
+	{
+		//parse the string of names returned from the database
+		//String result[] = response.toString().split(":");
+		response=response.replaceAll("\\bname\\b", "");
+		response= response.replaceAll("[{:}]", "");
+		response=response.replaceAll("\"", "");
+		response=response.substring(1,response.length()-1);
+		String tokens[]=response.split(",");
+		for(String s: tokens)
+		{
+			// add each person to the adapter list
+			adapter.add(s);
+			System.out.println(s);
+		}
+			
+	}
 }

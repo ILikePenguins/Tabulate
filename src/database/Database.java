@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+
 import android.os.AsyncTask;
 
 public class Database extends AsyncTask<String, String, String>
@@ -19,28 +20,40 @@ public class Database extends AsyncTask<String, String, String>
 	 JSONParser jsonParser = new JSONParser();//**********************//
 	 String url="http://192.168.1.7:8080/android_connect/";
 	 String response;
-	public Database (LinkedHashMap<String,String> map, String url) //
+	 public AsyncResponse delegate;
+	 private boolean postexec;
+	public Database (LinkedHashMap<String,String> map, String url) 
 	{
 		this.map=map;
 		this.url+=url;
-		
+		postexec=false;
 	}
 	
-	public Database ( String url) //
+	public Database ( String url, AsyncResponse delegate) 
 	{
 		this.url+=url;
-		
+		this.delegate=delegate;
+		postexec=true;
+	}
+	
+	public Database ( LinkedHashMap<String,String> map,String url, AsyncResponse delegate) 
+	{
+		this.map=map;
+		this.url+=url;
+		this.delegate=delegate;
+		postexec=true;
 	}
 
 	public void buildParameters()
 	{
 		Iterator it = map.entrySet().iterator();
-	    while (it.hasNext()) {
+	    while (it.hasNext())
+	    {
 	        Map.Entry pairs = (Map.Entry)it.next();
 	        //add to parameters
 	        params.add(new BasicNameValuePair((String)pairs.getKey(), (String) pairs.getValue()));
 	        System.out.println("key:" +pairs.getKey() + " = " + pairs.getValue());
-	        //it.remove(); // avoids a ConcurrentModificationException
+	        it.remove(); // avoids a ConcurrentModificationException
 	    }
 	}
 	
@@ -63,19 +76,21 @@ public class Database extends AsyncTask<String, String, String>
 //		    // failed to create product
 //			System.out.println("fail");
 //		}
-         parseNames();
-		return null;
+         //parseNames();
+		return response;
 	}
+
+	   protected void onPostExecute(String result) 
+	   {
+		   
+		   if(postexec)
+		   {
+		      delegate.processFinish(result);
+		   }
+	   }
+		   
 	
-	public void parseNames()
-	{
-		String result[] = response.toString().split(":");
-		for(String s: result)
-		{
-			System.out.println(s);
-		}
-		//System.out.println(response);
-	}
+	
 	
 
 }

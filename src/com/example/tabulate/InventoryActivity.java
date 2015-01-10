@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 
+import database.AsyncResponse;
 import database.Database;
 
 import android.app.Activity;
@@ -21,7 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class InventoryActivity extends Activity
+public class InventoryActivity extends Activity implements AsyncResponse
 {
 	private ArrayAdapter<String>   adapter;
 	private ArrayList<String> list = new ArrayList<String>();
@@ -39,6 +40,7 @@ public class InventoryActivity extends Activity
         // set the lv variable to your list in the xml
         ListView  lv=(ListView)findViewById(R.id.beer_list);  
         lv.setAdapter(adapter);
+        new Database ("customers/get_inventory.php",this).execute();
        // lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
     }
 
@@ -103,8 +105,31 @@ public AlertDialog form()
     AlertDialog dialog = builder.create();
     return builder.create();
 }
+@Override
+public void processFinish(String output) 
+{
+	parseNames(output);
+}
 
-
+public void parseNames(String response)
+{
+	//parse the string of names returned from the database
+	//String result[] = response.toString().split(":");
+	//response=response.replaceAll("\\bname\\b", "");
+	System.out.println(response);
+	response= response.replaceAll("[{:}]", "");
+	response=response.replaceAll("\"", "");
+	response=response.substring(1,response.length()-1);
+	System.out.println(response);
+	String tokens[]=response.split(",");
+	for(String s: tokens)
+	{
+		// add each person to the adapter list
+		adapter.add(s);
+		System.out.println(s);
+	}
+		
+}
 
 
 
