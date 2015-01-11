@@ -4,11 +4,28 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
-    <Button
-        android:id="@+id/addBeer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Beer" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/addBottle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Bottle" />
+
+        <Button
+            android:id="@+id/addPint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="36dp"
+            android:text="Add Pint" />
+
+    </RelativeLayout>
 
     	<ListView
     	    android:id="@+id/beer_list"

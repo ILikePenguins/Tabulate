@@ -81,14 +81,13 @@ public class JSONParser {
             String line = null;
             while ((line = reader.readLine()) != null)
             {
-                sb.append(line + "\n");
+                //sb.append(line + "\n");
              
-               // System.out.println(line);
                 json = line;
             }
             is.close();
             
-         //   System.out.println("sB: "+sb.toString());
+         //  System.out.println("sB: "+sb.toString());
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }

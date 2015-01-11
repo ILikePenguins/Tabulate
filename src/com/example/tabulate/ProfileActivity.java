@@ -20,7 +20,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    {
 		 
 	        super.onCreate(savedInstanceState);
-	        setContentView(R.layout.activity_profile_2);
+	        setContentView(R.layout.activity_profile_);
 	        //init buttons
 	        Button  btnAddBottle = (Button)findViewById(R.id.addBottleBtn);
 	        Button  btnAddPint = (Button)findViewById(R.id.addPintBtn);
