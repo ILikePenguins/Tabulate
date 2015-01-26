@@ -3,6 +3,8 @@ package com.example.tabulate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import parsing.Parse;
+
 import database.AsyncResponse;
 import database.Database;
 
@@ -22,17 +24,21 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 
-public class NamesActivity extends Activity implements AsyncResponse {
+public class NamesActivity extends Activity implements AsyncResponse
+{
 private EditText etName ;
 private ArrayAdapter<String>   adapter;
 private ArrayList<String> list = new ArrayList<String>();
-
-
+private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
+private String eventID;
+private Parse parse;
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.name_list);
 
+        parse=new Parse();
+        
         Button  btnAdd = (Button)findViewById(R.id.addTaskBtn);
         Button  btnRemove = (Button)findViewById(R.id.removeBtn);
         Button  btnInven = (Button)findViewById(R.id.inventoryBtn);
@@ -49,11 +55,13 @@ private ArrayList<String> list = new ArrayList<String>();
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
         
+        
          //new Database ("customers/get_customers.php",this).execute();
-         new Database ("customers/get_customers.php",this).execute();
-       //DatabaseRead read= new DatabaseRead("customers/get_customers.php");
-      // read.accessPHP();
-     //  read.parseNames(read.accessPHP());
+        map.put("name", getIntent().getExtras().getString("name"));
+        System.out.println(getIntent().getExtras().getString("name"));
+        //name and date will be sent together, parse then send
+        map.put("date", getIntent().getExtras().getString("date"));
+        new Database (map,"events/getEventID",this).execute();     
        
     }
     public ArrayAdapter<String> getAdapter() {
@@ -75,7 +83,8 @@ private ArrayList<String> list = new ArrayList<String>();
     	            //add to database
     	            LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
     	            map.put("name", input);
-    	            new Database(map,"customers/create_customer.php").execute();
+    	            map.put("event_id",eventID);
+    	            new Database(map,"customers/create").execute();
     	            //new CreateNewCustomer(input).execute();
     	        }
     	    }
@@ -103,7 +112,8 @@ private ArrayList<String> list = new ArrayList<String>();
     	  public void onClick(View v)
     	    {
     		  Intent inventoryIntent = new Intent(NamesActivity.this,InventoryActivity.class);
-  	      		startActivity(inventoryIntent);
+    		  inventoryIntent.putExtra("event_id",eventID);
+  	      	  startActivity(inventoryIntent);
     	    }
     }
     
@@ -120,6 +130,7 @@ private ArrayList<String> list = new ArrayList<String>();
 	        profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	      //pass values to the map activity
 	        profileIntent.putExtra("name", parent.getItemAtPosition(position).toString());
+	        profileIntent.putExtra("event_id",eventID);
 	        //start profile activity
 	      	startActivity(profileIntent);
 	    }
@@ -145,25 +156,39 @@ private ArrayList<String> list = new ArrayList<String>();
     }
 	public void processFinish(String output)
 	{
-		parseNames(output);
+		if(output.contains("getEventID"))
+		{
+			loadCustomers(output);
+		}
+		else
+			addNamesToAdapter(output);
 	}
 	
-	
-	public void parseNames(String response)
+	public void loadCustomers(String output)
 	{
-		//parse the string of names returned from the database
-		//String result[] = response.toString().split(":");
-		response=response.replaceAll("\\bname\\b", "");
-		response= response.replaceAll("[{:}]", "");
-		response=response.replaceAll("\"", "");
-		response=response.substring(1,response.length()-1);
-		String tokens[]=response.split(",");
+		getEventID(output);
+		map.put("name","");
+		map.put("event_id",eventID);
+	    new Database (map,"customers/retrieve",this).execute();
+	}
+	
+	public void getEventID(String response)
+	{
+		parse.setString(response);
+		eventID=parse.id();
+		
+	}
+	
+	public void addNamesToAdapter(String response)
+	{
+		parse.setString(response);
+		String [] tokens =parse.Names();
 		for(String s: tokens)
 		{
 			// add each person to the adapter list
 			adapter.add(s);
-			System.out.println(s);
+			//System.out.println(s);
 		}
-			
 	}
+
 }

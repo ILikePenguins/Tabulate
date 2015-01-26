@@ -4,42 +4,6 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/lbNumberBottles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/addBottleBtn"
-        android:layout_marginTop="27dp"
-        android:text="Bottles" />
-
-    <TextView
-        android:id="@+id/profileNameBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="19dp"
-        android:text="TextView" />
-
-    <Button
-        android:id="@+id/addPintBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/profileNameBtn"
-        android:layout_marginRight="56dp"
-        android:text="Add Pint" />
-
-    <Button
-        android:id="@+id/addBottleBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/profileNameBtn"
-        android:text="Add Bottle" />
-
-    <TextView
         android:id="@+id/lbNumberPints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,16 +11,6 @@
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="37dp"
         android:text="Pints" />
-
-    <TextView
-        android:id="@+id/tvNumberBottles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/lbNumberBottles"
-        android:layout_alignBottom="@+id/lbNumberBottles"
-        android:layout_marginLeft="38dp"
-        android:layout_toRightOf="@+id/addBottleBtn"
-        android:text="0" />
 
     <TextView
         android:id="@+id/tvNumberPints"
@@ -93,5 +47,50 @@
         android:layout_marginRight="26dp"
         android:layout_marginTop="66dp"
         android:text="Paid" />
+
+    <TextView
+        android:id="@+id/lbNumberBottles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lbNumberPints"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="30dp"
+        android:text="Bottles" />
+
+    <Spinner
+        android:id="@+id/pintSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/profileNameBtn"
+        android:layout_toRightOf="@+id/bottleSpinner" />
+
+    <Spinner
+        android:id="@+id/bottleSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/profileNameBtn"
+        android:layout_below="@+id/profileNameBtn" />
+
+    <TextView
+        android:id="@+id/tvNumberBottles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lbNumberBottles"
+        android:layout_alignBottom="@+id/lbNumberBottles"
+        android:layout_marginLeft="34dp"
+        android:layout_toRightOf="@+id/lbNumberBottles"
+        android:text="0" />
+
+    <TextView
+        android:id="@+id/profileNameBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="18dp"
+        android:layout_toRightOf="@+id/tvNumberBottles"
+        android:text="TextView" />
 
 </RelativeLayout>

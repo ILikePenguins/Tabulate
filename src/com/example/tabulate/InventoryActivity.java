@@ -3,10 +3,7 @@ package com.example.tabulate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-
-import database.AsyncResponse;
-import database.Database;
-
+import parsing.Parse;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,18 +19,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import database.AsyncResponse;
+import database.Database;
 
 public class InventoryActivity extends Activity implements AsyncResponse
 {
 	private ArrayAdapter<String>   adapter;
 	private ArrayList<String> list = new ArrayList<String>();
-	boolean isBottle;
-	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
+	private boolean isBottle;
+	private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
+	private Parse parse;
 	protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inventory_list);
 
+      parse=new Parse();
       Button  btnaddBottle = (Button)findViewById(R.id.addBottle);
       btnaddBottle.setOnClickListener(new AddBottleListener());
       
@@ -46,10 +47,20 @@ public class InventoryActivity extends Activity implements AsyncResponse
         // set the lv variable to your list in the xml
         ListView  lv=(ListView)findViewById(R.id.beer_list);  
         lv.setAdapter(adapter);
-        new Database ("get_inventory.php",this).execute();
+      
+        addToMap("","","","","");
+        new Database (map,"beer/retrieveBottlesAndPints",this).execute();
        // lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
     }
-
+public void addToMap(String name, String keg, String costp,String costb,String qb)
+{
+	  map.put("name", name);
+      map.put("quantity_keg", keg);
+      map.put("cost_pint", costp);
+      map.put("cost_bottle", costb);
+      map.put("quantity_bottle", qb);
+      map.put("event_id", getIntent().getExtras().getString("event_id"));
+}
     class AddBottleListener implements OnClickListener
     {
 
@@ -114,23 +125,22 @@ public AlertDialog form()
 
     	public void onClick(DialogInterface dialog, int which)
         {//save info
-        	String beer = "name: "+nameBox.getText()+" quantity: "+beerQuantity.getText()+" cost: $"
+        	String beer = "Name: "+nameBox.getText()+" Quantity: "+beerQuantity.getText()+" Cost_each: $"
         			+beerCost.getText();
         	adapter.add(beer);
             dialog.dismiss();
-            System.out.println(beer);
             
-            map.put("name", nameBox.getText().toString());
+            //map.put("name", nameBox.getText().toString());
             if(isBottle)
-            	map.put("quantity", beerQuantity.getText().toString());
-            map.put("cost", beerCost.getText().toString());
-            
-            if(isBottle)
-            {
-            	new Database(map,"add_bottle.php").execute();
-            }
+            	addToMap(nameBox.getText().toString(),"",beerCost.getText().toString(),beerCost.getText().toString(),beerQuantity.getText().toString());
             else
-            	new Database(map,"add_pint.php").execute();
+            	addToMap(nameBox.getText().toString(),"1",beerCost.getText().toString(),beerCost.getText().toString(),"");
+           // if(isBottle)
+            //{
+            	new Database(map,"beer/create").execute();
+//            }
+//            else
+//            	new Database(map,"add_pint").execute();
         }
     });
     //cancel button
@@ -147,39 +157,21 @@ public AlertDialog form()
 }
 public void processFinish(String output) 
 {
-	parseNames(output);
+	addBeersToAdapter(output);
 }
 
-public void parseNames(String response)
+public void addBeersToAdapter(String response)
 {
-	//parse the string of names returned from the database
-	//String result[] = response.toString().split(":");
-	//response=response.replaceAll("\\bname\\b", "");
-	//response=response.replaceAll("\\bcost\\b", "");
-	//response=response.replaceAll("\\bquantity\\b", "");
-	//System.out.println("asdasdasdsadasdasdasdasd "+response);
-	
-	//get rid of crap from response
-	response= response.replaceAll("[{]", "");
-	response=response.replaceAll("\",", "  ");
-	response=response.replaceAll("\"", "");
-	response=response.replaceAll("[}]", "");
-	
-	//System.out.println("*******");
-	//System.out.println(response);
-	response=response.substring(1,response.length()-2);
-	//System.out.println(response);
-	//break up response into lines containing name, cost, and quantity
-	String tokens[]=response.split(",");
-	for(String s: tokens)
-	{
-		// add each person to the adapter list
-		adapter.add(s);
-		System.out.println(s);
+		parse.setString(response);
+		String tokens[]=parse.beers().split(",");
+		for(String s: tokens)
+		{
+			// add each person to the adapter list
+			adapter.add(s);
+			System.out.println(s);
+		}
 	}
 		
 }
 
 
-
-}

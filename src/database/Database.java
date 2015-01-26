@@ -18,15 +18,17 @@ public class Database extends AsyncTask<String, String, String>
 	List<NameValuePair> params = new ArrayList<NameValuePair>();
 	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	 JSONParser jsonParser = new JSONParser();//**********************//
-	 String url="http://192.168.1.7:8080/android_connect/";
+	 String url="http://192.168.1.10:8080/android_connect/";
 	 String response;
 	 public AsyncResponse delegate;
 	 private boolean postexec;
+	 String request;
 	public Database (LinkedHashMap<String,String> map, String url) 
 	{
 		this.map=map;
 		this.url+=url;
 		postexec=false;
+		this.request=url;
 	}
 	
 	public Database ( String url, AsyncResponse delegate) 
@@ -34,6 +36,7 @@ public class Database extends AsyncTask<String, String, String>
 		this.url+=url;
 		this.delegate=delegate;
 		postexec=true;
+		this.request=url;
 	}
 	
 	public Database ( LinkedHashMap<String,String> map,String url, AsyncResponse delegate) 
@@ -42,6 +45,7 @@ public class Database extends AsyncTask<String, String, String>
 		this.url+=url;
 		this.delegate=delegate;
 		postexec=true;
+		this.request=url;
 	}
 
 	public void buildParameters()
@@ -59,9 +63,9 @@ public class Database extends AsyncTask<String, String, String>
 	
 	protected String doInBackground(String... arg0) 
 	{
-		System.out.println("0");
+		//System.out.println("0");
 		buildParameters();
-		System.out.println("asdasd");
+		//System.out.println("asdasd");
         // getting JSON Object
         // Note that create product url accepts POST method
          response = jsonParser.makeHttpRequest(url,
@@ -77,6 +81,8 @@ public class Database extends AsyncTask<String, String, String>
 //			System.out.println("fail");
 //		}
          //parseNames();
+         response+="*"+request;
+        // System.out.println(response);
 		return response;
 	}
 

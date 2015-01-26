@@ -4,5 +4,7 @@
     <string name="app_name">Tabulate</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="selBottle">Select Bottle</string>
+    <string name="selPint">Select Pint</string>
 
 </resources>
