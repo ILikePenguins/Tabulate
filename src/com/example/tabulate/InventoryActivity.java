@@ -3,22 +3,33 @@ package com.example.tabulate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import parsing.Parse;
+import table.Table;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 import database.AsyncResponse;
 import database.Database;
 
@@ -45,8 +56,8 @@ public class InventoryActivity extends Activity implements AsyncResponse
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 
         // set the lv variable to your list in the xml
-        ListView  lv=(ListView)findViewById(R.id.beer_list);  
-        lv.setAdapter(adapter);
+      //  ListView  lv=(ListView)findViewById(R.id.beer_list);  
+        //lv.setAdapter(adapter);
       
         addToMap("","","","","");
         //new Database (map,"beer/retrieveBottlesAndPints",this).execute();
@@ -160,9 +171,52 @@ public AlertDialog form()
 }
 public void processFinish(String output) 
 {
-		addBeersToAdapter(output);
+		//addBeersToAdapter(output);
+	if(output.contains("*beer/create"))
+		{
+		//TODO check when beer is added, display confirmation
+			System.out.println("asdasd");
+			Toast.makeText(getApplicationContext(), output,
+				   Toast.LENGTH_LONG).show();
+		}
+	String[] colNames={"Name","Quantity","Cost_Each","Type"};
+	String[] rowNames={"name","quantity","cost_each","type"};
+	Table table = new Table(output,(TableLayout) findViewById(R.id.tableInventory),this,colNames,rowNames);
+	table.buildTable();
+
 	
 }
+
+public void addColumn(TableRow tr, String colName)
+{
+	  TextView tv=new TextView(InventoryActivity.this);
+	  tv.setPadding(10, 0, 0, 0);
+	  tv.setText(colName);
+	  tv.setTextColor(Color.BLUE);
+	  tv.setTextSize(15);
+      tr.addView(tv);
+}
+
+
+
+
+//public void checkType( TextView tv, JSONObject json_data)
+//{
+//	//set color of kegs to cyan
+//	//set color of bottles to dark gray
+//	  int type;
+//	try {
+//			type = json_data.getInt("type");
+//	
+//	      if(type==1)
+//	    	  tv.setTextColor(Color.CYAN);
+//	      
+//	      else
+//	    	  tv.setTextColor(Color.DKGRAY);
+//	} catch (JSONException e) {
+//		e.printStackTrace();
+//	}
+//}
 
 public void addBeersToAdapter(String response)
 {

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/unyte" >
+    >
     
        <Button
             android:id="@+id/addEvent"
@@ -41,5 +41,10 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:textColor="#ffffff" />
+        
+
+    
+
+
     
 </RelativeLayout>

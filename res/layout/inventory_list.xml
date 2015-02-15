@@ -26,7 +26,13 @@
             android:text="Add Pint" />
 
     </RelativeLayout>
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/tableInventory"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"> 
+    </TableLayout>
 
+ <!--
     	<ListView
     	    android:id="@+id/beer_list"
     	    android:layout_width="match_parent"
@@ -35,5 +41,5 @@
     	    android:dividerHeight="4px"
     	    android:textColor="#ffffff" >
     	</ListView>
-
+ - -->
 </LinearLayout>

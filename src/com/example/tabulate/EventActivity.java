@@ -3,6 +3,7 @@ package com.example.tabulate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+
 import parsing.Parse;
 
 
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import database.AsyncResponse;
 import database.Database;
 
@@ -30,14 +32,16 @@ public class EventActivity extends Activity implements AsyncResponse
 	private ArrayAdapter<String>   adapter;
 	private ArrayList<String> list = new ArrayList<String>();
 	private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
-	private int id;
 	private DatePicker datePicker;
-	private Parse parse;
+	private Parse parse; 
 	  protected void onCreate(Bundle savedInstanceState)
 	    {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.event_names);
 
+	        
+	     
+	    
 	        Button  btnAdd = (Button)findViewById(R.id.addEvent);
 	       
 	        btnAdd.setOnClickListener(new AddEventListener());
@@ -111,10 +115,11 @@ public class EventActivity extends Activity implements AsyncResponse
 		    }
 
 		}
-
+//
 		public void processFinish(String output)
 		{
 			addEventsToAdapter(output);
+		
 		}
 
 		public void addEventsToAdapter(String response)
@@ -128,6 +133,7 @@ public class EventActivity extends Activity implements AsyncResponse
 				adapter.add(s);
 			}
 		}
+
 
 
 }

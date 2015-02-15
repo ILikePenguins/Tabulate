@@ -122,8 +122,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 		        addToMap("","","","","");
 		        new Database (map,"beer/retrievePints",this).execute();
 	    	}
-	    	else if(output.contains("get_beers"))
-	    		parseBeers(output);
+
 	    	else if(output.contains("retrievePints"))
 	    		addtoPintsList(output);
 	    	else if (output.contains("updateBottleQuantity"))
@@ -190,30 +189,6 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 				
 			}
 	    }
-		public void parseBeers(String response)
-		{
-			//get rid of added url
-			int spaceIndex = response.indexOf("*");
-			System.out.println(spaceIndex);
-			if (spaceIndex != -1)
-			{
-				response = response.substring(0, spaceIndex);
-			}
-			//parse the string of names returned from the database
-			response=response.replaceAll("\\bpints\\b", "");
-			response=response.replaceAll("\\bbottles\\b", "");
-			response= response.replaceAll("[{:}]", "");
-			response=response.replaceAll("\"", "");
-			System.out.println(response);
-			//response=response.substring(1,response.length()-1);
-			
-			parse.setString(response);
-			//String tokens[]=parse.sales().split(","); 
-			
-			String tokens[]=response.split(","); 
-			pints.setText(tokens[0]);
-			bottles.setText(tokens[1]);	
-		}
 		
 		public String incrementByOne(CharSequence c)
 		{
@@ -246,13 +221,6 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 			}
 				
 		}
-		
-		public void addToHashMap(String s)
-		{
-			
-			
-		}
-		
 		public void addtoPintsList(String response)
 		{
 			//parse the string of names returned from the database
@@ -271,5 +239,13 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 			}
 				
 		}
+		
+		public void addToHashMap(String s)
+		{
+			
+			
+		}
+		
+
 		
 }

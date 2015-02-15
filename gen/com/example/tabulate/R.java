@@ -1099,7 +1099,6 @@ containing a value of this type.
         public static final int addPint=0x7f050056;
         public static final int addTaskBtn=0x7f05003e;
         public static final int always=0x7f05000b;
-        public static final int beer_list=0x7f050057;
         public static final int beginning=0x7f050011;
         public static final int bottleSpinner=0x7f050048;
         public static final int checkbox=0x7f05002d;
@@ -1161,6 +1160,7 @@ containing a value of this type.
         public static final int split_action_bar=0x7f05001e;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
+        public static final int tableInventory=0x7f050057;
         public static final int title=0x7f05002b;
         public static final int top_action_bar=0x7f050020;
         public static final int tvBeerCost=0x7f05004b;
