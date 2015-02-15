@@ -20,15 +20,12 @@ public class Parse
 	}
 	public String[] Names()
 	{
-		if(response.contains("name")) //check for empty strings
-		{
+		
 			response=response.replaceAll("\\bname\\b", "");
 			crap();
 			response=response.substring(1,response.length()-1);
 			String tokens[]=response.split(",");
 			return tokens;
-		}
-		return null;
 		
 		
 	}
@@ -71,20 +68,22 @@ public class Parse
 	
 	public String beers()
 	{
-		if(response.contains("name")) //check for empty strings
-		{
-			response=response.replaceAll("\\bname\":\\b", "");
+		
+			//response=response.replaceAll("\\bname\":\\b", "");
+			
 			//get rid of crap from response
 			response= response.replaceAll("[{]", "");
-			response=response.replaceAll("\",", "  ");
+			response=response.replaceAll("\",", " ");
 			response=response.replaceAll("\"", "");
 			response=response.replaceAll("[}]", "");
+			//get rid of extra columns
+			response=response.replaceAll("\\bbeer_id:\\d+\\s+\\b", "");
+			response=response.replaceAll("\\bid:\\d+\\s+\\b", "");
+			response=response.replaceAll("\\btype:\\d+\\s+\\b", "");
+			response=response.replaceAll("\\bevent_id:\\d+\\b", "");
 			
 			response=response.substring(1,response.length()-1);
 			return response;
-		}
-		System.out.println("doesnt contain anything");
-		return null;
 	}
 	
 	public String sales ()

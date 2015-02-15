@@ -49,7 +49,10 @@ public class InventoryActivity extends Activity implements AsyncResponse
         lv.setAdapter(adapter);
       
         addToMap("","","","","");
+        //new Database (map,"beer/retrieveBottlesAndPints",this).execute();
+       // new Database (map,"beer/retrieveBottles",this).execute();
         new Database (map,"beer/retrieveBottlesAndPints",this).execute();
+       //
        // lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
     }
 public void addToMap(String name, String keg, String costp,String costb,String qb)
@@ -157,11 +160,14 @@ public AlertDialog form()
 }
 public void processFinish(String output) 
 {
-	addBeersToAdapter(output);
+		addBeersToAdapter(output);
+	
 }
 
 public void addBeersToAdapter(String response)
 {
+	if(response.contains("name")) //check for empty strings
+	{
 		parse.setString(response);
 		String tokens[]=parse.beers().split(",");
 		for(String s: tokens)
@@ -171,6 +177,7 @@ public void addBeersToAdapter(String response)
 			System.out.println(s);
 		}
 	}
+}
 		
 }
 

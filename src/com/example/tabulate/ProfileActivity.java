@@ -225,21 +225,24 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 		
 		public void addToBottleList(String response)
 		{
-			//break up response into lines containing name, cost, and quantity
-	    	parse.setString(response);
-		    String tokens[]=parse.beers().split(",");
-		    
-		
-			for(String s: tokens)
+			if(response.contains("name")) //check for empty strings
 			{
-				//check quanity of bottles, if quanity <0 dont add
-				int spaceindex=parse.nthOccurrence(s,' ',2);
-				int index = s.indexOf("quantity:");
-				String result = s.substring(index,spaceindex);
-				String tok[]=result.split(":");
-				// add each bottle to the adapter list if quantity>0
-				if(Double.parseDouble(tok[1])>0)
-					bottleList.add(s);
+				//break up response into lines containing name, cost, and quantity
+		    	parse.setString(response);
+			    String tokens[]=parse.beers().split(",");
+			    
+			
+				for(String s: tokens)
+				{
+					//check quanity of bottles, if quanity <0 dont add
+					int spaceindex=parse.nthOccurrence(s,' ',2);
+					int index = s.indexOf("quantity:");
+					String result = s.substring(index,spaceindex);
+					String tok[]=result.split(":");
+					// add each bottle to the adapter list if quantity>0
+					if(Double.parseDouble(tok[1].replace("cost_each", ""))>0)
+						bottleList.add(s);
+				}
 			}
 				
 		}
@@ -257,9 +260,14 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    	String tokens[]=parse.beers().split(",");
 			for(String s: tokens)
 			{
-				// add each person to the adapter list
-				pintList.add(s);
-				System.out.println(s);
+				//check quanity of bottles, if quanity <0 dont add
+				int spaceindex=parse.nthOccurrence(s,' ',2);
+				int index = s.indexOf("quantity:");
+				String result = s.substring(index,spaceindex);
+				String tok[]=result.split(":");
+				// add each bottle to the adapter list if quantity>0
+				if(Double.parseDouble(tok[1].replace("cost_each", ""))>0)
+					pintList.add(s);
 			}
 				
 		}

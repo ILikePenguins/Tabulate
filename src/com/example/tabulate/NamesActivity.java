@@ -181,12 +181,15 @@ private Parse parse;
 	
 	public void addNamesToAdapter(String response)
 	{
-		parse.setString(response);
-		String [] tokens =parse.Names();
-		for(String s: tokens)
+		if(response.contains("name")) //check for empty strings
 		{
-			// add each person to the adapter list
-			adapter.add(s);
+			parse.setString(response);
+			String [] tokens =parse.Names();
+			for(String s: tokens)
+			{
+				// add each person to the adapter list
+				adapter.add(s);
+			}
 		}
 	}
 
