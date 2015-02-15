@@ -31,7 +31,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	  private Spinner pintSpinner;
 	  private ArrayList<String> pintList;
 	  private ArrayAdapter<String> pintAdapter;
-	  
+	  private String customer;
 	  public void onCreate(Bundle savedInstanceState) 
 	    {
 		 
@@ -72,11 +72,13 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	        btnPaid.setOnClickListener(new PaidListener());
 	        
 	        TextView name = (TextView)findViewById(R.id.profileNameBtn);////
-	        name.setText(getIntent().getExtras().getString("name"));
+	        customer=getIntent().getExtras().getString("name");
+	        name.setText(customer);
 	        //add name to param list for json
 	        //map.put("name", getIntent().getExtras().getString("name"));
 	        
 	        addToMap("","","","","");
+	        //get bottles from db
 	        new Database (map,"beer/retrieveBottles",this).execute();
 	       // new Database (map,"customers/get_beers.php",this).execute();
 	    }
@@ -176,9 +178,10 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    		}
 	    		else
 	    		{
-	    			  //decrement number of pints
-		    		  //update pint spinner
-		    		  //update customer pints and total
+		    		//update customer pints and total
+	    			//addToMap(customer,"","","","");
+	    			//new Database (map,"sales/updatePints",ProfileActivity.this).execute();
+	    			//new Database (map,"sales/updateTotal",ProfileActivity.this).execute();
 	    		}
 	    		  
 	    	}

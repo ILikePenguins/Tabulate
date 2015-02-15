@@ -5,16 +5,14 @@ import java.util.LinkedHashMap;
 
 import parsing.Parse;
 
-import com.example.tabulate.NamesActivity.AddPersonListener;
-import com.example.tabulate.NamesActivity.InventoryListener;
-import com.example.tabulate.NamesActivity.OnItemClickListenerListViewItem;
-import com.example.tabulate.NamesActivity.RemovePersonListener;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 import database.AsyncResponse;
 import database.Database;
 
@@ -44,7 +43,15 @@ public class EventActivity extends Activity implements AsyncResponse
 	        btnAdd.setOnClickListener(new AddEventListener());
 	        etName = (EditText)findViewById(R.id.etEvent);
 	        datePicker = (DatePicker) findViewById(R.id.date);
-	        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+	        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list)
+	        		{
+	        		public View getView(int position, View convertView, ViewGroup parent) {
+	                View view = super.getView(position, convertView, parent);
+	                TextView text = (TextView) view.findViewById(android.R.id.text1);
+	                text.setTextColor(Color.WHITE);
+	                return view;
+	            }
+	        };
 	        
 	        parse=new Parse();
 	        

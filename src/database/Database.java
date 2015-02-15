@@ -5,24 +5,26 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.AsyncTask;
 
 public class Database extends AsyncTask<String, String, String>
 {
-
+	JSONArray array;
 	List<NameValuePair> params = new ArrayList<NameValuePair>();
 	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	 JSONParser jsonParser = new JSONParser();//**********************//
-	 String url="http://192.168.1.10:8080/android_connect/";
+	 String url="http://192.168.1.64:8080/android_connect/";
 	 String response;
 	 public AsyncResponse delegate;
 	 private boolean postexec;
 	 String request;
+	 private JSONParser parser=new JSONParser();
 	public Database (LinkedHashMap<String,String> map, String url) 
 	{
 		this.map=map;
@@ -81,8 +83,10 @@ public class Database extends AsyncTask<String, String, String>
 //			System.out.println("fail");
 //		}
          //parseNames();
+      
+        
          response+="*"+request;
-        // System.out.println(response);
+
 		return response;
 	}
 
@@ -95,8 +99,5 @@ public class Database extends AsyncTask<String, String, String>
 		   }
 	   }
 		   
-	
-	
-	
 
 }

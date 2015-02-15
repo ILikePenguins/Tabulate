@@ -138,16 +138,15 @@ private Parse parse;
 	}
     
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) 
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.names, menu);
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
@@ -156,6 +155,7 @@ private Parse parse;
     }
 	public void processFinish(String output)
 	{
+		System.out.println("output: "+ output);
 		if(output.contains("getEventID"))
 		{
 			loadCustomers(output);
@@ -169,7 +169,7 @@ private Parse parse;
 		getEventID(output);
 		map.put("name","");
 		map.put("event_id",eventID);
-	    new Database (map,"customers/retrieve",this).execute();
+	    new Database (map,"customers/retrieveCustomersByEvent",this).execute();
 	}
 	
 	public void getEventID(String response)
@@ -187,7 +187,6 @@ private Parse parse;
 		{
 			// add each person to the adapter list
 			adapter.add(s);
-			//System.out.println(s);
 		}
 	}
 
