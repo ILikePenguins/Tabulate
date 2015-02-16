@@ -8,12 +8,8 @@ public class Row
 	private int quantity;
 	private TextView tv;
 	private boolean changed;
-	public boolean isChanged() {
-		return changed;
-	}
-	public void setChanged(boolean changed) {
-		this.changed = changed;
-	}
+	private String name;
+
 	public Row()
 	{
 		
@@ -23,6 +19,18 @@ public class Row
 		this.id=id;
 		this.quantity=quantity;
 		
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public boolean isChanged() {
+		return changed;
+	}
+	public void setChanged(boolean changed) {
+		this.changed = changed;
 	}
 	public TextView getTv() {
 		return tv;

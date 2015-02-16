@@ -1,8 +1,12 @@
 package table;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.example.tabulate.InventoryActivity;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -20,7 +24,11 @@ public class Table
 	private int flag;
 	private String[] colNames;
 	private String[] rowNames;
-	
+	private int rowNum;
+	private Row row;
+	private HashMap<Integer,Row> rows;
+
+
 	public Table(String output, TableLayout tl,Activity activity, String[] colNames, String[] rowNames)
 	{
 		try 
@@ -35,6 +43,8 @@ public class Table
 		flag=1;
 		this.colNames=colNames;
 		this.rowNames=rowNames;
+		rows=new HashMap<Integer,Row>();
+		rowNum=0;
 	}
 	
 	public void buildTable()
@@ -46,7 +56,7 @@ public class Table
             tr.setLayoutParams(new LayoutParams(
             LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT));
-
+            tr.setOnClickListener(new InventoryActivity.RowListener(activity));
             // this will be executed once
             if(flag==1)
             {
@@ -64,7 +74,6 @@ public class Table
                 vline.setBackgroundColor(Color.BLUE);
                 tl.addView(vline); // add line below heading
                 flag=0;
-                System.out.println("run");
             }
             else 
             {
@@ -73,7 +82,7 @@ public class Table
 				try 
 				{
 					json_data = jArray.getJSONObject(i);
-				
+					row=new Row();
 					for(String s: rowNames)
 	            	{
 						if(s.equals("type"))
@@ -100,8 +109,9 @@ public class Table
 						else
 							getRow(tr,json_data,s);
 	            	}
+				rows.put(rowNum, row);
                 tl.addView(tr);
-                
+                rowNum++;
                 final View vline1 = new View(activity);
                 vline1.setLayoutParams(new                
                 TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 1));
@@ -137,11 +147,25 @@ public class Table
 	    //check if keg or bottle
 	   // checkType(tv,json_data);
 	    tv.setTextSize(15);
-	    tr.addView(tv);
-	    System.out.println(str);
+	    tr.setId(rowNum);
+	    if(colName.equals("name"))
+	    	row.setName(str);
+	    if(colName.equals("id"))
+	    	row.setId(str);
+	    else
+	    	tr.addView(tv);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public HashMap<Integer, Row> getRows() {
+		return rows;
+	}
+
+	public void setRows(HashMap<Integer, Row> rows) {
+		this.rows = rows;
 	}
 
 	

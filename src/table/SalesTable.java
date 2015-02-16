@@ -1,6 +1,5 @@
 package table;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,7 +22,6 @@ public class SalesTable
 	private JSONArray jArray;
 	private TableLayout tl;
 	private Activity activity;
-	private int flag;
 	private String[] colNames;
 	private String[] rowNames;
 	private HashMap<Integer,Row> rows;
@@ -42,7 +38,6 @@ public class SalesTable
 		this.tl=tl;
 		this.activity=activity;
 		tl.removeAllViewsInLayout();
-		flag=1;
 		this.colNames=colNames;
 		this.rowNames=rowNames;
 		
@@ -52,6 +47,7 @@ public class SalesTable
 	
 	public void buildTable()
 	{
+		int flag=1;
 	    for(int i=-1;i<jArray.length();i++)
         {
 

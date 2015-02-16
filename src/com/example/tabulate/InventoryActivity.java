@@ -3,9 +3,6 @@ package com.example.tabulate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import parsing.Parse;
 import table.Table;
@@ -16,16 +13,13 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -40,6 +34,7 @@ public class InventoryActivity extends Activity implements AsyncResponse
 	private boolean isBottle;
 	private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private Parse parse;
+	private static  Table table;
 	protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -180,8 +175,8 @@ public void processFinish(String output)
 				   Toast.LENGTH_LONG).show();
 		}
 	String[] colNames={"Name","Quantity","Cost_Each","Type"};
-	String[] rowNames={"name","quantity","cost_each","type"};
-	Table table = new Table(output,(TableLayout) findViewById(R.id.tableInventory),this,colNames,rowNames);
+	String[] rowNames={"name","quantity","cost_each","type","id"};
+	table = new Table(output,(TableLayout) findViewById(R.id.tableInventory),this,colNames,rowNames);
 	table.buildTable();
 
 	
@@ -231,6 +226,41 @@ public void addBeersToAdapter(String response)
 			System.out.println(s);
 		}
 	}
+}
+
+public static class RowListener implements OnClickListener
+{
+	private Activity activity;
+	public RowListener( Activity activity)
+	{
+		this.activity=activity;
+	}
+	
+	public void onClick(View v) 
+	{
+		//System.out.println(v.getId());
+		//product id
+		System.out.println(table.getRows().get(v.getId()));
+		String name=table.getRows().get(v.getId()).getName();
+		new AlertDialog.Builder(activity)
+	    .setTitle("Delete entry")
+	    .setMessage("Are you sure you want to delete "+name+"?")
+	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	            // continue with delete
+	        }
+	     })
+	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	            // do nothing
+	        }
+	     })
+	    .setIcon(android.R.drawable.ic_dialog_alert)
+	     .show();
+	//	form = new FormDialog();
+		//  form.show(getFragmentManager(), "Add Beer");
+	}
+	
 }
 		
 }
