@@ -111,7 +111,7 @@ public AlertDialog form()
 {
 	//Preparing views
     LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-    View layout = inflater.inflate(R.layout.add_beer, (ViewGroup) findViewById(R.id.name_list));
+    View layout = inflater.inflate(R.layout.add_beer_inventory, (ViewGroup) findViewById(R.id.name_list));
     //layout_root should be the name of the "top-level" layout node in the dialog_layout.xml file.
     final EditText nameBox = (EditText) layout.findViewById(R.id.etBeerName);
     final EditText beerCost= (EditText) layout.findViewById(R.id.etBeerCost);

@@ -52,7 +52,7 @@ public class EventActivity extends Activity implements AsyncResponse
 	        		public View getView(int position, View convertView, ViewGroup parent) {
 	                View view = super.getView(position, convertView, parent);
 	                TextView text = (TextView) view.findViewById(android.R.id.text1);
-	                text.setTextColor(Color.WHITE);
+	                text.setTextColor(Color.BLACK);
 	                return view;
 	            }
 	        };

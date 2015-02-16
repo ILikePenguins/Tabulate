@@ -35,6 +35,10 @@
             android:launchMode="singleTask"
         </activity>
         
+        <activity android:name=".AddBeerActivity">
+            android:launchMode="singleTask"
+        </activity>
+        
     </application>
       <!--  Internet Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />

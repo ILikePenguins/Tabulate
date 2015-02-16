@@ -18,7 +18,7 @@ public class Database extends AsyncTask<String, String, String>
 	JSONArray array;
 	List<NameValuePair> params = new ArrayList<NameValuePair>();
 	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
-	 JSONParser jsonParser = new JSONParser();//**********************//
+	 JSONParser jsonParser = new JSONParser();//**********************///////////////////////////////////////////////////
 	 String url="http://192.168.1.64:8080/android_connect/";
 	 String response;
 	 public AsyncResponse delegate;
@@ -86,7 +86,7 @@ public class Database extends AsyncTask<String, String, String>
       
         
          response+="*"+request;
-         System.out.println(response);
+       //  System.out.println(response);
 		return response;
 	}
 

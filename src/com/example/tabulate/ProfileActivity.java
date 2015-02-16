@@ -32,6 +32,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	  private ArrayList<String> pintList;
 	  private ArrayAdapter<String> pintAdapter;
 	  private String customer;
+	  
 	  public void onCreate(Bundle savedInstanceState) 
 	    {
 		 

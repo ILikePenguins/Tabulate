@@ -125,14 +125,26 @@ private Parse parse;
 	    	//get name of person clicked on
 	        System.out.println("name "+parent.getItemAtPosition(position).toString());
 	        //start map view
-	        Intent profileIntent = new Intent(NamesActivity.this,ProfileActivity.class);
+	        
+	        
+	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
 	        //loads map if it is not loaded already
-	        profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	      //pass values to the map activity
-	        profileIntent.putExtra("name", parent.getItemAtPosition(position).toString());
-	        profileIntent.putExtra("event_id",eventID);
+	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
+	        addBeerIntent.putExtra("event_id",eventID);
 	        //start profile activity
-	      	startActivity(profileIntent);
+	      	startActivity(addBeerIntent);
+	        
+	        
+//	        Intent profileIntent = new Intent(NamesActivity.this,ProfileActivity.class);
+//	        //loads map if it is not loaded already
+//	        profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//	      //pass values to the map activity
+//	        profileIntent.putExtra("name", parent.getItemAtPosition(position).toString());
+//	        profileIntent.putExtra("event_id",eventID);
+//	        //start profile activity
+//	      	startActivity(profileIntent);
 	    }
 
 	}

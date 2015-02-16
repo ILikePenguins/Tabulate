@@ -18,7 +18,7 @@
         android:layout_height="355dp"
         android:layout_below="@id/addEvent"
         android:dividerHeight="4px"
-        android:textColor="#ffffff" >
+        >
     </ListView>
     
         <EditText
@@ -29,7 +29,7 @@
         android:layout_toLeftOf="@id/date"
         android:layout_alignParentLeft="true"
         android:ems="10"
-        android:textColor="#ffffff"  />
+         />
 
         <DatePicker
             android:id="@+id/date"
@@ -40,7 +40,7 @@
             android:calendarViewShown="false"
             android:scaleX="0.5"
             android:scaleY="0.5"
-            android:textColor="#ffffff" />
+             />
         
 
     

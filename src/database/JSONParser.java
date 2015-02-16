@@ -99,7 +99,7 @@ public class JSONParser {
 //        } catch (JSONException e) {
 //            Log.e("JSON Parser", "Error parsing data " + e.toString());
 //        }
-        System.out.println(json);
+        //System.out.println(json);
         // return JSON String
         return json;
  
