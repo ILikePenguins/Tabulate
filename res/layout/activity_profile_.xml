@@ -57,22 +57,6 @@
         android:layout_marginBottom="30dp"
         android:text="Bottles" />
 
-    <Spinner
-        android:id="@+id/pintSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/profileNameBtn"
-        android:layout_toRightOf="@+id/bottleSpinner" />
-
-    <Spinner
-        android:id="@+id/bottleSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/profileNameBtn"
-        android:layout_below="@+id/profileNameBtn" />
-
     <TextView
         android:id="@+id/tvNumberBottles"
         android:layout_width="wrap_content"

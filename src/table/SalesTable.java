@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -64,6 +66,7 @@ public class SalesTable
             	//set column titles for table
             	for(String s: colNames)
             	{
+            		
             		addColumn(tr,s);
             	}
             	//add the to view
@@ -149,7 +152,10 @@ public class SalesTable
 	public void addColumn(TableRow tr, String colName)
 	{
 		  TextView tv=new TextView(activity);
-		  tv.setPadding(10, 0, 0, 0);
+//		  if(colName.equals("dec" )|| colName.equals("inc"))
+//			  tv.setPadding(4, 0, 0, 0);
+//		  else
+			  tv.setPadding(10, 0, 0, 0);
 		  tv.setText(colName);
 		  tv.setTextColor(Color.BLUE);
 		  tv.setTextSize(15);
@@ -161,6 +167,8 @@ public class SalesTable
 		ImageButton b= new ImageButton(activity);
 		b.setImageResource(R.drawable.dec);
 		b.setId(position);
+		//b.setLayoutParams(new RelativeLayout.LayoutParams(10, 100));
+		//b.setLayoutParams(new LinearLayout.LayoutParams(500,500));
 //		if(position==0)
 //		{
 			b.setOnClickListener(new DecListener());
@@ -192,11 +200,11 @@ public class SalesTable
 			str = String.valueOf(json_data.getString(colName));
 
 	    tv.setText(str);
+	    tv.setTextSize(15);
 	    if(colName.equals("id"))
 	    	row.setId(str);
-	    
-	    tv.setTextSize(15);
-	    tr.addView(tv);
+	    else
+	    	tr.addView(tv);
 	    
 		} catch (JSONException e) {
 			e.printStackTrace();
