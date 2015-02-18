@@ -151,7 +151,7 @@ public class Table
 	    if(colName.equals("name"))
 	    	row.setName(str);
 	    if(colName.equals("id"))
-	    	row.setId(str);
+	    	row.setProductId(str);
 	    else
 	    	tr.addView(tv);
 		} catch (JSONException e) {

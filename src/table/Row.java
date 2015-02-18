@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 public class Row
 {
-	private String id;
+	private String product_id;
 	private int quantity;
 	private TextView tv;
 	private boolean changed;
@@ -14,9 +14,9 @@ public class Row
 	{
 		
 	}
-	public Row(int quantity, String id)
+	public Row(int quantity, String product_id)
 	{
-		this.id=id;
+		this.product_id=product_id;
 		this.quantity=quantity;
 		
 	}
@@ -39,12 +39,12 @@ public class Row
 		this.tv = tv;
 	}
 
-	public String getId() {
-		return id;
+	public String getProductId() {
+		return product_id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setProductId(String id) {
+		this.product_id = id;
 	}
 
 	public int getQuantity() {
@@ -56,7 +56,7 @@ public class Row
 	}
 	public String toString() 
 	{
-		return "Row [id=" + id + ", quantity=" + quantity + "]";
+		return "Row [id=" + product_id + ", quantity=" + quantity + "]";
 	}
 
 	

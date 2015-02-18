@@ -1,21 +1,15 @@
 package com.example.tabulate;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Queue;
 
-import parsing.Parse;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import database.AsyncResponse;
 import database.Database;
+import form.ParseJson;
 
 public class ProfileActivity extends FragmentActivity implements AsyncResponse
 {
@@ -46,19 +40,18 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	        customer=getIntent().getExtras().getString("name");
 	        name.setText(customer);
 	        
-	        addToMap("","","","","");
+	        addToMap("");
 	        //get bottles from db
 	        new Database (map,"sales/getBottlesPurchasedByCustomer",this).execute();
-	       // new Database (map,"customers/get_beers.php",this).execute();
+	        //new Database (map,"sales/getPintsPurchasedByCustomer",this).execute();
+	        
+	        //get pints from db
 	    }
 	  
-	  public void addToMap(String name, String keg, String costp,String costb,String qb)
+	  public void addToMap(String name)
 	  {
 	  	    map.put("name", name);
-	        map.put("quantity_keg", keg);
-	        map.put("cost_pint", costp);
-	        map.put("cost_bottle", costb);
-	        map.put("quantity_bottle", qb);
+	        map.put("customer_id", getIntent().getExtras().getString("customer_id"));
 	        map.put("event_id", getIntent().getExtras().getString("event_id"));
 	  }	  
 	    
@@ -83,23 +76,41 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    
 	    public void processFinish(String output)
 		{
+	    	ParseJson parse;
+	    	if(output.contains("getBottles"))
+	    	{
+	    		System.out.println("output: "+output);
+	    		
+	    		parse = new ParseJson(output,bottles,new String[]{"SUM(s.quantity)"});
+	    		parse.changeTextView();
+	    		addToMap("");
+	    		new Database (map,"sales/getPintsPurchasedByCustomer",this).execute();
+//	    		try {
+//					Thread.sleep(500);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+	    	}
+	    	else if(output.contains("getPints"))
+			{
+	    		//System.out.println("**********fdsf");
+				//System.out.println("output: "+output);
+				parse = new ParseJson(output,pints,new String[]{"SUM(s.quantity)"});
+	    		parse.changeTextView();
+	    		addToMap("");
+	    		new Database (map,"sales/getTotalForCustomer",this).execute();
+			}
+	    	
+	    	else if(output.contains("getTotal"))
+	    	{
+	    		parse = new ParseJson(output,total,new String[]{"SUM(s.cost_total)"});
+	    		parse.changeTextView();
+	    	}
+	    	
 	    	
 	    	System.out.println("output: "+output);
-	    	
-	    		
-	    		
 		}
 	    
-	    public void decrementQuantity()
-	    {
-	    	//get the current quantity, and decrement by 1
-	    	
-	    	
-	    }
-	    
-
-	
-		
 		public void addToHashMap(String s)
 		{
 			

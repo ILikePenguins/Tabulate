@@ -7,6 +7,7 @@ import parsing.Parse;
 
 import database.AsyncResponse;
 import database.Database;
+import form.ParseJson;
 
 
 import android.app.Activity;
@@ -32,6 +33,7 @@ private ArrayList<String> list = new ArrayList<String>();
 private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 private String eventID;
 private Parse parse;
+private ParseJson pj;
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -56,11 +58,11 @@ private Parse parse;
         lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
         
         
-         //new Database ("customers/get_customers.php",this).execute();
         map.put("name", getIntent().getExtras().getString("name"));
         System.out.println(getIntent().getExtras().getString("name"));
         //name and date will be sent together, parse then send
         map.put("date", getIntent().getExtras().getString("date"));
+        //get the event id
         new Database (map,"events/getEventID",this).execute();     
        
     }
@@ -124,15 +126,14 @@ private Parse parse;
 	    {
 	    	//get name of person clicked on
 	        System.out.println("name "+parent.getItemAtPosition(position).toString());
-	        //start map view
-	        
-	        
+
 	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
 	        //loads map if it is not loaded already
 	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	      //pass values to the map activity
 	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
 	        addBeerIntent.putExtra("event_id",eventID);
+	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
 	        //start profile activity
 	      	startActivity(addBeerIntent);
 	        
@@ -167,13 +168,18 @@ private Parse parse;
     }
 	public void processFinish(String output)
 	{
+		System.out.println("Asdasd");
 		System.out.println("output: "+ output);
 		if(output.contains("getEventID"))
 		{
 			loadCustomers(output);
 		}
 		else
-			addNamesToAdapter(output);
+		{
+			pj= new ParseJson(output,adapter,new String[]{"id","name"});
+			pj.AddToAdapter();
+			//addNamesToAdapter(output);
+		}
 	}
 	
 	public void loadCustomers(String output)
@@ -181,6 +187,7 @@ private Parse parse;
 		getEventID(output);
 		map.put("name","");
 		map.put("event_id",eventID);
+		//with the event id, customers can now be retrieved
 	    new Database (map,"customers/retrieveCustomersByEvent",this).execute();
 	}
 	
@@ -204,5 +211,6 @@ private Parse parse;
 			}
 		}
 	}
+	
 
 }

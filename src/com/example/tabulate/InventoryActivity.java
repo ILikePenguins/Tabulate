@@ -242,23 +242,26 @@ public static class RowListener implements OnClickListener
 		//product id
 		System.out.println(table.getRows().get(v.getId()));
 		String name=table.getRows().get(v.getId()).getName();
+		
+		//load dialog asking to delete row or not
 		new AlertDialog.Builder(activity)
 	    .setTitle("Delete entry")
 	    .setMessage("Are you sure you want to delete "+name+"?")
 	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) { 
+	    	
+	        public void onClick(DialogInterface dialog, int which) 
+	        { 
 	            // continue with delete
 	        }
 	     })
 	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) { 
+	        public void onClick(DialogInterface dialog, int which) 
+	        { 
 	            // do nothing
 	        }
 	     })
 	    .setIcon(android.R.drawable.ic_dialog_alert)
 	     .show();
-	//	form = new FormDialog();
-		//  form.show(getFragmentManager(), "Add Beer");
 	}
 	
 }

@@ -8,8 +8,6 @@ import java.util.Map;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.os.AsyncTask;
 
@@ -24,7 +22,7 @@ public class Database extends AsyncTask<String, String, String>
 	 public AsyncResponse delegate;
 	 private boolean postexec;
 	 String request;
-	 private JSONParser parser=new JSONParser();
+	// private JSONParser parser=new JSONParser();
 	public Database (LinkedHashMap<String,String> map, String url) 
 	{
 		this.map=map;

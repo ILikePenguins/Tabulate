@@ -141,7 +141,6 @@ public class SalesTable
 //		    Integer key = entry.getKey();
 //		    Row value = (Row)entry.getValue();
 //		    System.out.println("key: "+key+value.toString());
-//		    // ...
 //		}
 	}
 	
@@ -198,7 +197,7 @@ public class SalesTable
 	    tv.setText(str);
 	    tv.setTextSize(15);
 	    if(colName.equals("id"))
-	    	row.setId(str);
+	    	row.setProductId(str);
 	    else
 	    	tr.addView(tv);
 	    

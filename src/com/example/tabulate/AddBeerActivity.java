@@ -20,6 +20,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 {
 	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private SalesTable table;
+	private String customer_id;
 	 public void onCreate(Bundle savedInstanceState) 
 	    {
 		 
@@ -28,31 +29,37 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	        
 	        TextView name = (TextView)findViewById(R.id.tvCustomer);////
 	        name.setText(getIntent().getExtras().getString("name"));
-	        
+	        customer_id=(getIntent().getExtras().getString("customer_id"));
+	        System.out.println("cust "+customer_id);
 	        Button  btnProfile = (Button)findViewById(R.id.btnProfile);
 	        btnProfile.setOnClickListener(new ProfileListener());
-	        addToMap("","","","","");
+	        addToMap("","");
 	        //get bottles from db
 	        new Database (map,"beer/retrieveBottlesAndPints",this).execute();
 	       // new Database (map,"customers/get_beers.php",this).execute();
 	    }
 	
-	  public void addToMap(String name, String keg, String costp,String costb,String qb)
+	  public void addToMap(String product_id, String quantity)
 	  {
-	  	    map.put("name", name);
-	        map.put("quantity_keg", keg);
-	        map.put("cost_pint", costp);
-	        map.put("cost_bottle", costb);
-	        map.put("quantity_bottle", qb);
+	  	    map.put("product_id", product_id);
+	        map.put("quantity", quantity);
+	        map.put("customer_id", (getIntent().getExtras().getString("customer_id")));
 	        map.put("event_id", getIntent().getExtras().getString("event_id"));
+	        System.out.println(product_id+","+quantity+",");
 	  }	  
 	
 	public void processFinish(String output) 
 	{
-		String[] colNames={"Name","dec","Quantity","inc","Cost_Each","Type"};
-		String[] rowNames={"name","quantity","cost_each","type","id"};
-		table= new SalesTable(output,(TableLayout) findViewById(R.id.tableSales),this,colNames,rowNames);
-		table.buildTable();
+		//System.out.println("output "+output);
+		if(output.contains("name"))
+		{
+			String[] colNames={"Name","dec","Quantity","inc","Cost_Each","Type"};
+			String[] rowNames={"name","quantity","cost_each","type","id"};
+			table= new SalesTable(output,(TableLayout) findViewById(R.id.tableSales),this,colNames,rowNames);
+			table.buildTable();
+		}
+		else
+			System.out.println("output "+output);
 		
 	}
 	
@@ -60,11 +67,23 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	{
 	    for (Entry<Integer, Row> entry : table.getRows().entrySet()) 
 	    {
-		    Integer key = entry.getKey();
 		    Row value = (Row)entry.getValue();
 		    if(value.isChanged())
-		    	System.out.println("key: "+key+value.toString());
+		    {
+		    	///////////////needs to change only sum get added to db////////////
+		    	addToMap(value.getProductId(),value.getQuantity()+"");
+		    	new Database (map,"sales/newSale",this).execute();
+		    	//System.out.println("key: "+key+value.toString());
+		    	try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+		    	
+		    }
+		    
 		}
+	    
 	}
 	
 //	public static class DecListener implements OnClickListener
@@ -82,12 +101,14 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 
     	  public void onClick(View v)
     	    {
+    		  rowsChanged();
     		  Intent profileIntent = new Intent(AddBeerActivity.this,ProfileActivity.class);
   	        //loads map if it is not loaded already
     		  profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
   	      //pass values to the map activity
     		  profileIntent.putExtra("name", getIntent().getExtras().getString("name"));
     		  profileIntent.putExtra("event_id",getIntent().getExtras().getString("event_id"));
+    		  profileIntent.putExtra("customer_id",getIntent().getExtras().getString("customer_id"));
   	        //start profile activity
   	      	startActivity(profileIntent);
     	    }
