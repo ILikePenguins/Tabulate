@@ -212,7 +212,10 @@ public class SalesTable
 		TextView tv=new TextView(activity);
 	    int str;
 		try {
-			str = Integer.valueOf(json_data.getInt(colName));
+			if(json_data.isNull(colName))
+				str=0;
+			else 
+				str = Integer.valueOf(json_data.getInt(colName));
 
 	    tv.setText(str+"");
 	    row.setTv(tv);

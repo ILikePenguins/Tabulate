@@ -84,7 +84,7 @@ public class Database extends AsyncTask<String, String, String>
       
         
          response+="*"+request;
-       //  System.out.println(response);
+         System.out.println(response);
 		return response;
 	}
 

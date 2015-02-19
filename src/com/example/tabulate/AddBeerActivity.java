@@ -35,7 +35,8 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	        btnProfile.setOnClickListener(new ProfileListener());
 	        addToMap("","");
 	        //get bottles from db
-	        new Database (map,"beer/retrieveBottlesAndPints",this).execute();
+	        new Database (map,"sales/retrieveBottlesAndPintsSales",this).execute();
+	       // new Database (map,"beer/retrieveBottlesAndPints",this).execute();
 	       // new Database (map,"customers/get_beers.php",this).execute();
 	    }
 	
@@ -50,7 +51,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	
 	public void processFinish(String output) 
 	{
-		//System.out.println("output "+output);
+		System.out.println("output "+output);
 		if(output.contains("name"))
 		{
 			String[] colNames={"Name","dec","Quantity","inc","Cost_Each","Type"};
@@ -65,17 +66,19 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	
 	public void rowsChanged()
 	{
+		// make new thread for queries
 	    for (Entry<Integer, Row> entry : table.getRows().entrySet()) 
 	    {
 		    Row value = (Row)entry.getValue();
 		    if(value.isChanged())
 		    {
-		    	///////////////needs to change only sum get added to db////////////
+		    	
+		///////////////needs to change, only some get added to db////////////
 		    	addToMap(value.getProductId(),value.getQuantity()+"");
 		    	new Database (map,"sales/newSale",this).execute();
 		    	//System.out.println("key: "+key+value.toString());
 		    	try {
-					Thread.sleep(100);
+					Thread.sleep(200);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

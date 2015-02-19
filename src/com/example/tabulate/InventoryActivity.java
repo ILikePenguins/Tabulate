@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 
-import parsing.Parse;
 import table.Table;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,15 +31,14 @@ public class InventoryActivity extends Activity implements AsyncResponse
 	private ArrayAdapter<String>   adapter;
 	private ArrayList<String> list = new ArrayList<String>();
 	private boolean isBottle;
-	private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
-	private Parse parse;
+	private static LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private static  Table table;
+	static String event_id;
 	protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inventory_list);
 
-      parse=new Parse();
       Button  btnaddBottle = (Button)findViewById(R.id.addBottle);
       btnaddBottle.setOnClickListener(new AddBottleListener());
       
@@ -49,26 +47,27 @@ public class InventoryActivity extends Activity implements AsyncResponse
         
         //etName = (EditText)findViewById(R.id.etAdd);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-
+        event_id= getIntent().getExtras().getString("event_id");
         // set the lv variable to your list in the xml
       //  ListView  lv=(ListView)findViewById(R.id.beer_list);  
         //lv.setAdapter(adapter);
       
-        addToMap("","","","","");
+        addToMap("","","","","","");
         //new Database (map,"beer/retrieveBottlesAndPints",this).execute();
        // new Database (map,"beer/retrieveBottles",this).execute();
         new Database (map,"beer/retrieveBottlesAndPints",this).execute();
        //
        // lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
     }
-public void addToMap(String name, String keg, String costp,String costb,String qb)
+public static void addToMap(String name, String keg, String costp,String costb,String qb,String product_id)
 {
 	  map.put("name", name);
       map.put("quantity_keg", keg);
       map.put("cost_pint", costp);
       map.put("cost_bottle", costb);
       map.put("quantity_bottle", qb);
-      map.put("event_id", getIntent().getExtras().getString("event_id"));
+      map.put("product_id", product_id);
+      map.put("event_id", event_id);
 }
     class AddBottleListener implements OnClickListener
     {
@@ -141,9 +140,9 @@ public AlertDialog form()
             
             //map.put("name", nameBox.getText().toString());
             if(isBottle)
-            	addToMap(nameBox.getText().toString(),"",beerCost.getText().toString(),beerCost.getText().toString(),beerQuantity.getText().toString());
+            	addToMap(nameBox.getText().toString(),"",beerCost.getText().toString(),beerCost.getText().toString(),beerQuantity.getText().toString(),"");
             else
-            	addToMap(nameBox.getText().toString(),"1",beerCost.getText().toString(),beerCost.getText().toString(),"");
+            	addToMap(nameBox.getText().toString(),"1",beerCost.getText().toString(),beerCost.getText().toString(),"","");
            // if(isBottle)
             //{
             	new Database(map,"beer/create").execute();
@@ -174,12 +173,14 @@ public void processFinish(String output)
 			Toast.makeText(getApplicationContext(), output,
 				   Toast.LENGTH_LONG).show();
 		}
-	String[] colNames={"Name","Quantity","Cost_Each","Type"};
-	String[] rowNames={"name","quantity","cost_each","type","id"};
-	table = new Table(output,(TableLayout) findViewById(R.id.tableInventory),this,colNames,rowNames);
-	table.buildTable();
-
+	else if(output.contains("retrieveBottlesAndPints"))
+	{
+		String[] colNames={"Name","Quantity","Cost_Each","Type"};
+		String[] rowNames={"name","quantity","cost_each","type","id"};
+		table = new Table(output,(TableLayout) findViewById(R.id.tableInventory),this,colNames,rowNames);
+		table.buildTable();
 	
+	}
 }
 
 public void addColumn(TableRow tr, String colName)
@@ -213,24 +214,12 @@ public void addColumn(TableRow tr, String colName)
 //	}
 //}
 
-public void addBeersToAdapter(String response)
-{
-	if(response.contains("name")) //check for empty strings
-	{
-		parse.setString(response);
-		String tokens[]=parse.beers().split(",");
-		for(String s: tokens)
-		{
-			// add each person to the adapter list
-			adapter.add(s);
-			System.out.println(s);
-		}
-	}
-}
 
 public static class RowListener implements OnClickListener
 {
+
 	private Activity activity;
+	String id;
 	public RowListener( Activity activity)
 	{
 		this.activity=activity;
@@ -242,7 +231,7 @@ public static class RowListener implements OnClickListener
 		//product id
 		System.out.println(table.getRows().get(v.getId()));
 		String name=table.getRows().get(v.getId()).getName();
-		
+		id=table.getRows().get(v.getId()).getProductId();
 		//load dialog asking to delete row or not
 		new AlertDialog.Builder(activity)
 	    .setTitle("Delete entry")
@@ -251,6 +240,8 @@ public static class RowListener implements OnClickListener
 	    	
 	        public void onClick(DialogInterface dialog, int which) 
 	        { 
+	        	addToMap("","","","","",id);
+	        	 new Database (map,"beer/deleteBeer").execute();
 	            // continue with delete
 	        }
 	     })
@@ -263,6 +254,8 @@ public static class RowListener implements OnClickListener
 	    .setIcon(android.R.drawable.ic_dialog_alert)
 	     .show();
 	}
+
+
 	
 }
 		
