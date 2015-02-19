@@ -42,7 +42,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	        
 	        addToMap("");
 	        //get bottles from db
-	        new Database (map,"sales/getBottlesPurchasedByCustomer",this).execute();
+	        new Database (map,"sales/getBottlesPurchasedByCustomer",this);
 	        //new Database (map,"sales/getPintsPurchasedByCustomer",this).execute();
 	        
 	        //get pints from db
@@ -84,7 +84,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    		parse = new ParseJson(output,bottles,new String[]{"SUM(s.quantity)"});
 	    		parse.changeTextView();
 	    		addToMap("");
-	    		new Database (map,"sales/getPintsPurchasedByCustomer",this).execute();
+	    		new Database (map,"sales/getPintsPurchasedByCustomer",this);
 //	    		try {
 //					Thread.sleep(500);
 //				} catch (InterruptedException e) {
@@ -98,7 +98,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 				parse = new ParseJson(output,pints,new String[]{"SUM(s.quantity)"});
 	    		parse.changeTextView();
 	    		addToMap("");
-	    		new Database (map,"sales/getTotalForCustomer",this).execute();
+	    		new Database (map,"sales/getTotalForCustomer",this);
 			}
 	    	
 	    	else if(output.contains("getTotal"))

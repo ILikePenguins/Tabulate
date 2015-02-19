@@ -63,7 +63,7 @@ private ParseJson pj;
         //name and date will be sent together, parse then send
         map.put("date", getIntent().getExtras().getString("date"));
         //get the event id
-        new Database (map,"events/getEventID",this).execute();     
+        new Database (map,"events/getEventID",this);   
        
     }
     public ArrayAdapter<String> getAdapter() {
@@ -133,19 +133,10 @@ private ParseJson pj;
 	      //pass values to the map activity
 	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
 	        addBeerIntent.putExtra("event_id",eventID);
+	        System.out.println("customer: " +pj.getCustomer_id().get(position));
 	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
 	        //start profile activity
 	      	startActivity(addBeerIntent);
-	        
-	        
-//	        Intent profileIntent = new Intent(NamesActivity.this,ProfileActivity.class);
-//	        //loads map if it is not loaded already
-//	        profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//	      //pass values to the map activity
-//	        profileIntent.putExtra("name", parent.getItemAtPosition(position).toString());
-//	        profileIntent.putExtra("event_id",eventID);
-//	        //start profile activity
-//	      	startActivity(profileIntent);
 	    }
 
 	}
@@ -172,6 +163,7 @@ private ParseJson pj;
 		System.out.println("output: "+ output);
 		if(output.contains("getEventID"))
 		{
+			System.out.println("loading customers");
 			loadCustomers(output);
 		}
 		else
@@ -188,7 +180,7 @@ private ParseJson pj;
 		map.put("name","");
 		map.put("event_id",eventID);
 		//with the event id, customers can now be retrieved
-	    new Database (map,"customers/retrieveCustomersByEvent",this).execute();
+	    new Database (map,"customers/retrieveCustomersByEvent",this);
 	}
 	
 	public void getEventID(String response)

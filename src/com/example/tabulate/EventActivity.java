@@ -65,7 +65,7 @@ public class EventActivity extends Activity implements AsyncResponse
 	        
 	        map.put("name", "");
 	        map.put("date", "");
-	        new Database (map,"events/retrieve",this).execute();
+	        new Database (map,"events/retrieve",this);
 
 	       
 	    }
@@ -118,7 +118,6 @@ public class EventActivity extends Activity implements AsyncResponse
 		public void processFinish(String output)
 		{
 			addEventsToAdapter(output);
-		
 		}
 
 		public void addEventsToAdapter(String response)
