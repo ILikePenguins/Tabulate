@@ -3,18 +3,19 @@ package com.example.tabulate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+
+
 import parsing.Parse;
+import parsing.ParseJson;
 
 import database.AsyncResponse;
 import database.Database;
-import form.ParseJson;
 
 
+import adapter.NameAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -34,28 +35,32 @@ private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 private String eventID;
 private Parse parse;
 private ParseJson pj;
+private NameAdapter fta;
+private ListView listView;
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.name_list);
 
         parse=new Parse();
-        
+        //buttons
         Button  btnAdd = (Button)findViewById(R.id.addTaskBtn);
         Button  btnRemove = (Button)findViewById(R.id.removeBtn);
         Button  btnInven = (Button)findViewById(R.id.inventoryBtn);
-       
+        //button listeners
         btnAdd.setOnClickListener(new AddPersonListener());
         btnRemove.setOnClickListener(new RemovePersonListener());
         btnInven.setOnClickListener(new InventoryListener());
+        
         
         etName = (EditText)findViewById(R.id.etAdd);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 
         // set the lv variable to your list in the xml
-        ListView  lv=(ListView)findViewById(R.id.name_list);  
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
+        //ListView  lv=(ListView)findViewById(R.id.name_list);  
+       // lv.setAdapter(adapter);
+       // lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
         
         
         map.put("name", getIntent().getExtras().getString("name"));
@@ -66,7 +71,8 @@ private ParseJson pj;
         new Database (map,"events/getEventID",this);   
        
     }
-    public ArrayAdapter<String> getAdapter() {
+    public ArrayAdapter<String> getAdapter()
+    {
 		return adapter;
 	}
 	class AddPersonListener implements OnClickListener
@@ -78,7 +84,6 @@ private ParseJson pj;
     	        if(input.length() > 0)
     	        {
     	            // add string to the adapter
-    	        	System.out.println("*****"+input);
     	            adapter.add(input);
     	            etName.setText("");
     	            
@@ -87,7 +92,6 @@ private ParseJson pj;
     	            map.put("name", input);
     	            map.put("event_id",eventID);
     	            new Database(map,"customers/create").execute();
-    	            //new CreateNewCustomer(input).execute();
     	        }
     	    }
     }
@@ -113,6 +117,7 @@ private ParseJson pj;
 
     	  public void onClick(View v)
     	    {
+    		  // start the inventory activity
     		  Intent inventoryIntent = new Intent(NamesActivity.this,InventoryActivity.class);
     		  inventoryIntent.putExtra("event_id",eventID);
   	      	  startActivity(inventoryIntent);
@@ -130,33 +135,20 @@ private ParseJson pj;
 	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
 	        //loads map if it is not loaded already
 	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	      //pass values to the map activity
+	        
+	        //pass values to the map activity
 	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
 	        addBeerIntent.putExtra("event_id",eventID);
 	        System.out.println("customer: " +pj.getCustomer_id().get(position));
 	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
+	        addBeerIntent.putExtra("text_ids",fta.getText_ids());
+	        
 	        //start profile activity
 	      	startActivity(addBeerIntent);
 	    }
 
 	}
     
-
-    public boolean onCreateOptionsMenu(Menu menu) 
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.names, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 	public void processFinish(String output)
 	{
 		System.out.println("Asdasd");
@@ -168,8 +160,13 @@ private ParseJson pj;
 		}
 		else
 		{
+			addNamesToAdapter(output);
 			pj= new ParseJson(output,adapter,new String[]{"id","name"});
 			pj.AddToAdapter();
+			fta = new NameAdapter(pj.getNames());
+			listView= (ListView) findViewById(R.id.name_list);
+	        listView.setAdapter(fta);
+	        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
 			//addNamesToAdapter(output);
 		}
 	}
@@ -196,11 +193,12 @@ private ParseJson pj;
 		{
 			parse.setString(response);
 			String [] tokens =parse.Names();
-			for(String s: tokens)
-			{
-				// add each person to the adapter list
-				adapter.add(s);
-			}
+			
+//			for(String s: tokens)
+//			{
+//				// add each person to the adapter list
+//				adapter.add(s);
+//			}
 		}
 	}
 	

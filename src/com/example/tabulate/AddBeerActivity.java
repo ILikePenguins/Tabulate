@@ -138,6 +138,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
   		  profileIntent.putExtra("name", getIntent().getExtras().getString("name"));
   		  profileIntent.putExtra("event_id",getIntent().getExtras().getString("event_id"));
   		  profileIntent.putExtra("customer_id",getIntent().getExtras().getString("customer_id"));
+  		 profileIntent.putExtra("text_ids", getIntent().getSerializableExtra("text_ids"));
 	        //start profile activity
 	      	startActivity(profileIntent);
     }

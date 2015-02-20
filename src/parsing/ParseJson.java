@@ -1,5 +1,6 @@
-package form;
+package parsing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -18,8 +19,11 @@ public class ParseJson
 	private String[] columnNames;
 	private HashMap<Integer,String> customer_id;
 	private TextView tv;
+	private ArrayList<String> names;
 	
-	
+	public ArrayList<String> getNames() {
+		return names;
+	}
 	public ParseJson(String output, TextView tv,String[] columnNames)
 	{
 		this.tv=tv;
@@ -35,6 +39,7 @@ public class ParseJson
 	{
 		this.adapter=adapter;
 		this.columnNames=columnNames;
+		names= new ArrayList<String>();
 		try 
 		{
 			jArray = new JSONArray(output);
@@ -65,7 +70,8 @@ public class ParseJson
 				//add position and id to hashmap
 				customer_id.put(count, id);
 				//add name to adapter
-				adapter.add(str);
+				//adapter.add(str);
+				names.add(str);
 				count++;
 				System.out.println(str);
 			 } catch (JSONException e) 

@@ -1,6 +1,8 @@
 package com.example.tabulate;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import parsing.ParseJson;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -9,7 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import database.AsyncResponse;
 import database.Database;
-import form.ParseJson;
 
 public class ProfileActivity extends FragmentActivity implements AsyncResponse
 {
@@ -18,7 +19,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	  TextView pints ;
 	  TextView total;
 	  private String customer;
-	  
+	  private HashMap<String, Integer> text_ids;
 	  public void onCreate(Bundle savedInstanceState) 
 	    {
 		 
@@ -39,7 +40,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	        TextView name = (TextView)findViewById(R.id.profileNameBtn);////
 	        customer=getIntent().getExtras().getString("name");
 	        name.setText(customer);
-	        
+	        text_ids= (HashMap<String, Integer>) getIntent().getSerializableExtra("text_ids");
 	        addToMap("");
 	        //get bottles from db
 	        new Database (map,"sales/getBottlesPurchasedByCustomer",this);
@@ -60,10 +61,11 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 
 	    	  public void onClick(View v)
 	    	    {
-	    		  new Database(map,"customers/paid").execute();
-	    		  //TextView tv = (TextView) findViewById(R.id.name_list);
+	    		 // new Database(map,"customers/paid").execute();
+	    		 System.out.println(text_ids.get(getIntent().getExtras().getString("name")));
+	    		 // TextView tv = (TextView) findViewById(R.id.name_list);
 	    		 // tv.setText("This is strike-thru");
-	    		// tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+	    		  //tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	    	       //cross name off
 	    		  //change status?
 	    	    }

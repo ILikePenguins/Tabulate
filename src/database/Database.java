@@ -23,6 +23,7 @@ public class Database extends AsyncTask<String, String, String>
 	 public AsyncResponse delegate;
 	 private boolean postexec;
 	 String request;
+	 //used when response is not needed
 	public Database (LinkedHashMap<String,String> map, String url) 
 	{
 		this.map=map;
@@ -31,14 +32,7 @@ public class Database extends AsyncTask<String, String, String>
 		this.request=url;
 	}
 	
-	public Database ( String url, AsyncResponse delegate) 
-	{
-		this.url+=url;
-		this.delegate=delegate;
-		postexec=true;
-		this.request=url;
-	}
-	
+	//used when response is needed
 	public  Database ( LinkedHashMap<String,String> map,String url, AsyncResponse delegate) 
 	{
 		
