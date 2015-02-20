@@ -22,30 +22,30 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 {
 	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private SalesTable table;
-	private String customer_id;
 	private Queue<LinkedHashMap<String,String>> q= new LinkedList<LinkedHashMap<String,String>>();
 	 public void onCreate(Bundle savedInstanceState) 
 	    {
 		 
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.add_beer_sale);
+	        
 	        //set name of customer 
 	        TextView name = (TextView)findViewById(R.id.tvCustomer);
 	        name.setText(getIntent().getExtras().getString("name"));
-	        //get customer id
-	        customer_id=(getIntent().getExtras().getString("customer_id"));
+	        
 	        //buttons
 	        Button  btnProfile = (Button)findViewById(R.id.btnProfile);
 	        btnProfile.setOnClickListener(new ProfileListener());
-	        addToMap("","");
+	        addToMap("","","");
 	        //get bottles from db
 	        new Database (map,"sales/retrieveBottlesAndPintsSales",this);
 	    }
 	
-	  public void addToMap(String product_id, String quantity)
+	  public void addToMap(String product_id, String quantity,String amount)
 	  {
 	  	    map.put("product_id", product_id);
 	        map.put("quantity", quantity);
+	        map.put("amount", amount);
 	        map.put("customer_id",getIntent().getExtras().getString("customer_id"));
 	        map.put("event_id", getIntent().getExtras().getString("event_id"));
 	       // System.out.println(product_id+","+quantity+",");
@@ -53,9 +53,9 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	
 	public void processFinish(String output) 
 	{
-		System.out.println("output "+output);
+		//System.out.println("output "+output);
 		if(output.contains("name"))
-		{
+		{ 
 			//build the table
 			String[] colNames={"Name","Dec","#Bought","Inc","#Stock","Price","Type"};
 			String[] rowNames={"name","quantity","PQ","cost_each","type","id"};
@@ -81,7 +81,8 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	
 	public void rowsChanged()
 	{
-		// make new thread for queries
+		//get the rows that were changed, add them to db
+		//adds to queue first
 		int count =0;
 	    for (Entry<Integer, Row> entry : table.getRows().entrySet()) 
 	    {
@@ -89,22 +90,19 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 		    if(value.isChanged())
 		    {
 		    	map= new LinkedHashMap<String, String>();
-		    	addToMap(value.getProductId(),value.getQuantity()+"");
+		    	addToMap(value.getProductId(),value.getQuantity()+"",value.getProduct_quantity()+"");
 		    	if(count==0)
 		    	{
 			    	new Database (map,"sales/newSale",this);
 		    	}
 		    	else
-		    	
 		    		q.add(map);
 		    	
 		    	count++;
 		    }
-		    
 		}
 	    if(count==0)
 	    	startProfileActivity();
-	    
 	}
 	
 	
@@ -126,8 +124,8 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
   		  profileIntent.putExtra("name", getIntent().getExtras().getString("name"));
   		  profileIntent.putExtra("event_id",getIntent().getExtras().getString("event_id"));
   		  profileIntent.putExtra("customer_id",getIntent().getExtras().getString("customer_id"));
-	        //start profile activity
-	      	startActivity(profileIntent);
+	      //start profile activity
+	      startActivity(profileIntent);
     }
 
 }

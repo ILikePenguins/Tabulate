@@ -70,7 +70,7 @@ public class ParseJson
 				//add position and id to hashmap
 				customer_id.put(count, id);
 				//add name to adapter
-				//adapter.add(str);
+				adapter.add(str);
 				names.add(str);
 				count++;
 				System.out.println(str);

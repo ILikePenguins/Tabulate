@@ -1,9 +1,7 @@
 package table;
 
 import android.widget.TextView;
-//TODO: get product info quantity displayed in table,
-//check if person is buying more than the amount left.
-//update product info quantity after purchase
+
 public class Row
 {
 	private String product_id;

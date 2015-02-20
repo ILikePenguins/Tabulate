@@ -68,6 +68,7 @@ public class SalesTable
             	//add the to view
                 tl.addView(tr);
 
+                //line under column titles
                 final View vline = new View(activity);
                 vline.setLayoutParams(new       
                 TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 2));
@@ -122,11 +123,12 @@ public class SalesTable
 						
 						
 	            	}
-					
+					//add to hashmap and incrememnt position
 					rows.put(position, row);
 					position++;
                 tl.addView(tr);
                 
+                //row lines
                 final View vline1 = new View(activity);
                 vline1.setLayoutParams(new                
                 TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 1));
@@ -167,15 +169,7 @@ public class SalesTable
 		ImageButton b= new ImageButton(activity);
 		b.setImageResource(R.drawable.dec);
 		b.setId(position);
-		//b.setLayoutParams(new RelativeLayout.LayoutParams(10, 100));
-		//b.setLayoutParams(new LinearLayout.LayoutParams(500,500));
-//		if(position==0)
-//		{
 			b.setOnClickListener(new DecListener());
-//			//b.setOnClickListener(new AddBeerActivity.DecListener());
-//			System.out.println("set");
-//		}
-		//b.setText("d");
 		tr.addView(b);
 		
 	}
@@ -186,8 +180,6 @@ public class SalesTable
 		b.setImageResource(R.drawable.inc);
 		b.setId(position);
 		b.setOnClickListener(new IncListener());
-		//b.setOnClickListener(l)
-		//b.setText("i");
 		tr.addView(b);
 		
 	}
@@ -196,15 +188,20 @@ public class SalesTable
 		//get rows from the json array to populate table
 		TextView tv=new TextView(activity);
 	    String str;
-		try {
+		try 
+		{
 			str = String.valueOf(json_data.getString(colName));
 
-	    tv.setText(str);
-	    tv.setTextSize(15);
-	    if(colName.equals("id"))
-	    	row.setProductId(str);
-	    else
-	    	tr.addView(tv);
+			if(colName.equals("cost_each"))
+				tv.setText("$"+str);
+			else
+				tv.setText(str);
+			
+		    tv.setTextSize(15);
+		    if(colName.equals("id"))
+		    	row.setProductId(str);
+		    else
+		    	tr.addView(tv);
 	    
 		} catch (JSONException e) {
 			e.printStackTrace();

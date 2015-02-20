@@ -3,25 +3,24 @@ package com.example.tabulate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-
-
 import parsing.Parse;
 import parsing.ParseJson;
-
-import database.AsyncResponse;
-import database.Database;
 import adapter.NameAdapter;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
+import database.AsyncResponse;
+import database.Database;
 
 
 public class NamesActivity extends Activity implements AsyncResponse
@@ -56,9 +55,9 @@ private ListView listView;
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 
         // set the lv variable to your list in the xml
-        //ListView  lv=(ListView)findViewById(R.id.name_list);  
-       // lv.setAdapter(adapter);
-       // lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
+        ListView  lv=(ListView)findViewById(R.id.name_list);  
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
         
         
         map.put("name", getIntent().getExtras().getString("name"));
@@ -78,7 +77,8 @@ private ListView listView;
     {
 	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	    {
-  		  //tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+	    	//TextView tv= (TextView) findViewById((int)parent.getItemIdAtPosition(position));
+	    	//tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	    	//get name of person clicked on
 
 	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
@@ -118,10 +118,10 @@ private ListView listView;
 			//addNamesToAdapter(output);
 			pj= new ParseJson(output,adapter,new String[]{"id","name"});
 			pj.AddToAdapter();
-			fta = new NameAdapter(pj.getNames(),this);
-			listView= (ListView) findViewById(R.id.name_list);
-	        listView.setAdapter(fta);
-	        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
+//			fta = new NameAdapter(pj.getNames(),this);
+//			listView= (ListView) findViewById(R.id.name_list);
+//	        listView.setAdapter(fta);
+//	        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
 			//addNamesToAdapter(output);
 		}
 	}
@@ -142,14 +142,14 @@ private ListView listView;
     	        if(input.length() > 0)
     	        {
     	            // add string to the adapter
-    	            adapter.add(input);
+    	        	adapter.add(input);
     	            etName.setText("");
     	            
     	            //add to database
     	            LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
     	            map.put("name", input);
     	            map.put("event_id",eventID);
-    	            new Database(map,"customers/create").execute();
+    	            new Database(map,"customers/create");
     	        }
     	    }
     }
