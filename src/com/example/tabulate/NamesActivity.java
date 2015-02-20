@@ -10,8 +10,6 @@ import parsing.ParseJson;
 
 import database.AsyncResponse;
 import database.Database;
-
-
 import adapter.NameAdapter;
 import android.app.Activity;
 import android.content.Intent;
@@ -64,7 +62,6 @@ private ListView listView;
         
         
         map.put("name", getIntent().getExtras().getString("name"));
-        System.out.println(getIntent().getExtras().getString("name"));
         //name and date will be sent together, parse then send
         map.put("date", getIntent().getExtras().getString("date"));
         //get the event id
@@ -74,6 +71,67 @@ private ListView listView;
     public ArrayAdapter<String> getAdapter()
     {
 		return adapter;
+	}
+	
+    
+    public class OnItemClickListenerListViewItem implements OnItemClickListener 
+    {
+	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+	    {
+  		  //tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+	    	//get name of person clicked on
+
+	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
+	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        
+	        //pass values to the map activity
+	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
+	        addBeerIntent.putExtra("event_id",eventID);
+	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
+	        
+	        //start profile activity
+	      	startActivity(addBeerIntent);
+	    }
+
+	}
+    
+	public void loadCustomers(String output)
+	{
+		getEventID(output);
+		map.put("name","");
+		map.put("event_id",eventID);
+		//with the event id, customers can now be retrieved
+	    new Database (map,"customers/retrieveCustomersByEvent",this);
+	}
+	
+    
+	public void processFinish(String output)
+	{
+		System.out.println("output: "+ output);
+		if(output.contains("getEventID"))
+		{
+			System.out.println("loading customers");
+			loadCustomers(output);
+		}
+		else
+		{
+			//addNamesToAdapter(output);
+			pj= new ParseJson(output,adapter,new String[]{"id","name"});
+			pj.AddToAdapter();
+			fta = new NameAdapter(pj.getNames(),this);
+			listView= (ListView) findViewById(R.id.name_list);
+	        listView.setAdapter(fta);
+	        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
+			//addNamesToAdapter(output);
+		}
+	}
+	
+
+	public void getEventID(String response)
+	{
+		parse.setString(response);
+		eventID=parse.id();
+		
 	}
 	class AddPersonListener implements OnClickListener
     {
@@ -124,83 +182,8 @@ private ListView listView;
     	    }
     }
     
-    
-    public class OnItemClickListenerListViewItem implements OnItemClickListener 
-    {
-	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-	    {
-	    	//get name of person clicked on
-	        System.out.println("name "+parent.getItemAtPosition(position).toString());
+	
 
-	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
-	        //loads map if it is not loaded already
-	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        
-	        //pass values to the map activity
-	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
-	        addBeerIntent.putExtra("event_id",eventID);
-	        System.out.println("customer: " +pj.getCustomer_id().get(position));
-	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
-	        addBeerIntent.putExtra("text_ids",fta.getText_ids());
-	        
-	        //start profile activity
-	      	startActivity(addBeerIntent);
-	    }
-
-	}
-    
-	public void processFinish(String output)
-	{
-		System.out.println("Asdasd");
-		System.out.println("output: "+ output);
-		if(output.contains("getEventID"))
-		{
-			System.out.println("loading customers");
-			loadCustomers(output);
-		}
-		else
-		{
-			addNamesToAdapter(output);
-			pj= new ParseJson(output,adapter,new String[]{"id","name"});
-			pj.AddToAdapter();
-			fta = new NameAdapter(pj.getNames());
-			listView= (ListView) findViewById(R.id.name_list);
-	        listView.setAdapter(fta);
-	        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
-			//addNamesToAdapter(output);
-		}
-	}
-	
-	public void loadCustomers(String output)
-	{
-		getEventID(output);
-		map.put("name","");
-		map.put("event_id",eventID);
-		//with the event id, customers can now be retrieved
-	    new Database (map,"customers/retrieveCustomersByEvent",this);
-	}
-	
-	public void getEventID(String response)
-	{
-		parse.setString(response);
-		eventID=parse.id();
-		
-	}
-	
-	public void addNamesToAdapter(String response)
-	{
-		if(response.contains("name")) //check for empty strings
-		{
-			parse.setString(response);
-			String [] tokens =parse.Names();
-			
-//			for(String s: tokens)
-//			{
-//				// add each person to the adapter list
-//				adapter.add(s);
-//			}
-		}
-	}
 	
 
 }

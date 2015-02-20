@@ -3,7 +3,6 @@ package com.example.tabulate;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import table.Row;
@@ -30,17 +29,17 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 		 
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.add_beer_sale);
-	        TextView name = (TextView)findViewById(R.id.tvCustomer);////
+	        //set name of customer 
+	        TextView name = (TextView)findViewById(R.id.tvCustomer);
 	        name.setText(getIntent().getExtras().getString("name"));
+	        //get customer id
 	        customer_id=(getIntent().getExtras().getString("customer_id"));
-	        System.out.println("cust "+customer_id);
+	        //buttons
 	        Button  btnProfile = (Button)findViewById(R.id.btnProfile);
 	        btnProfile.setOnClickListener(new ProfileListener());
 	        addToMap("","");
 	        //get bottles from db
 	        new Database (map,"sales/retrieveBottlesAndPintsSales",this);
-	       // new Database (map,"beer/retrieveBottlesAndPints",this).execute();
-	       // new Database (map,"customers/get_beers.php",this).execute();
 	    }
 	
 	  public void addToMap(String product_id, String quantity)
@@ -54,22 +53,25 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	
 	public void processFinish(String output) 
 	{
-		//System.out.println("output "+output);
+		System.out.println("output "+output);
 		if(output.contains("name"))
 		{
-			String[] colNames={"Name","dec","Quantity","inc","Cost_Each","Type"};
-			String[] rowNames={"name","quantity","cost_each","type","id"};
+			//build the table
+			String[] colNames={"Name","Dec","#Bought","Inc","#Stock","Price","Type"};
+			String[] rowNames={"name","quantity","PQ","cost_each","type","id"};
 			table= new SalesTable(output,(TableLayout) findViewById(R.id.tableSales),this,colNames,rowNames);
 			table.buildTable();
 		}
 		else if(!q.isEmpty()&& output.contains("sales/newSale"))
 		{
+			//update the sales
 			System.out.println("boop");
 			new Database (q.remove(),"sales/newSale",this);
 			
 		}
 		else if(q.isEmpty() && output.contains("updated"))
 			{
+			//start the sales activity once all beers are updated
 				System.out.println("starting profile");
 				startProfileActivity();
 			}
@@ -100,21 +102,11 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 		    }
 		    
 		}
-	    
 	    if(count==0)
 	    	startProfileActivity();
 	    
 	}
 	
-//	public static class DecListener implements OnClickListener
-//	{
-//		public void onClick(View v) 
-//		{
-//			System.out.println(v.getId());
-//			System.out.println("click");
-//			
-//		}
-//	}
 	
     class ProfileListener implements OnClickListener
     {
@@ -122,10 +114,6 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
     	  public void onClick(View v)
     	    {
     		  rowsChanged();
-    		
-    		//  Thread updateThread = new Thread(new UpdateDB());
-    		 // updateThread.start();
-    		
     	    }
     }
     
@@ -138,7 +126,6 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
   		  profileIntent.putExtra("name", getIntent().getExtras().getString("name"));
   		  profileIntent.putExtra("event_id",getIntent().getExtras().getString("event_id"));
   		  profileIntent.putExtra("customer_id",getIntent().getExtras().getString("customer_id"));
-  		 profileIntent.putExtra("text_ids", getIntent().getSerializableExtra("text_ids"));
 	        //start profile activity
 	      	startActivity(profileIntent);
     }

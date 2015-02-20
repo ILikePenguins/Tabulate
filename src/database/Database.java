@@ -30,6 +30,7 @@ public class Database extends AsyncTask<String, String, String>
 		this.url+=url;
 		postexec=false;
 		this.request=url;
+		execute();
 	}
 	
 	//used when response is needed

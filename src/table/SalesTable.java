@@ -100,7 +100,7 @@ public class SalesTable
 			                }
 			                else
 			                {
-			             	   str3="Bottle";
+			             	   str3="Bot";
 			             	   //b3.setTextColor(Color.DKGRAY);
 			                }
 			                b3.setText(str3);
@@ -112,6 +112,10 @@ public class SalesTable
 							addButtonDec(tr);	
 							getRowInt(tr,json_data,s);
 							addButtonInc(tr);
+						}
+						else if(s.equals("PQ"))
+						{
+							getRowInt(tr,json_data,s);
 						}
 						else
 							getRow(tr,json_data,s);
@@ -147,10 +151,11 @@ public class SalesTable
 	public void addColumn(TableRow tr, String colName)
 	{
 		  TextView tv=new TextView(activity);
-//		  if(colName.equals("dec" )|| colName.equals("inc"))
+//		  if(colName.equals("dec" )
+//				  ||colName.equals("#Bought"))
 //			  tv.setPadding(4, 0, 0, 0);
 //		  else
-			  tv.setPadding(10, 0, 0, 0);
+		  tv.setPadding(10, 0, 0, 0);
 		  tv.setText(colName);
 		  tv.setTextColor(Color.BLUE);
 		  tv.setTextSize(15);
@@ -218,8 +223,17 @@ public class SalesTable
 				str = Integer.valueOf(json_data.getInt(colName));
 
 	    tv.setText(str+"");
-	    row.setTv(tv);
-	    row.setQuantity(str);
+	   
+	    if(colName.equals("PQ"))
+	    {
+	    	row.setProduct_quantity(str);
+	    	row.setTv_p_quantity(tv);
+	    }
+	    else if(colName.equals("quantity"))
+	    {
+	    	row.setQuantity(str);
+	    	 row.setTvQuantity(tv);
+	    }
 	    tv.setTextSize(15);
 	    tr.addView(tv);
 		} catch (JSONException e) {
@@ -230,12 +244,20 @@ public class SalesTable
 	{
 		public void onClick(View v) 
 		{
-			//the row was changed
-			rows.get(v.getId()).setChanged(true);
-			//decrement the quantity
-			rows.get(v.getId()).setQuantity(rows.get(v.getId()).getQuantity()-1);
-			//update textview with current quantity
-			rows.get(v.getId()).getTv().setText(rows.get(v.getId()).getQuantity()+"");
+			if(rows.get(v.getId()).getQuantity()>0)
+				{
+				//the row was changed
+				rows.get(v.getId()).setChanged(true);
+				//decrement the quantity
+				rows.get(v.getId()).setQuantity(rows.get(v.getId()).getQuantity()-1);
+				//update textview with current quantity
+				rows.get(v.getId()).getTvQuantity().setText(rows.get(v.getId()).getQuantity()+"");
+				
+				//increment the product quantity
+				rows.get(v.getId()).setProduct_quantity(rows.get(v.getId()).getProduct_quantity()+1);
+				//update textview with current quantity
+				rows.get(v.getId()).getTv_p_quantity().setText(rows.get(v.getId()).getProduct_quantity()+"");
+			}
 		}
 	}
 	
@@ -245,10 +267,19 @@ public class SalesTable
 		{
 			//the row was changed
 			rows.get(v.getId()).setChanged(true);
-			//decrement the quantity
-			rows.get(v.getId()).setQuantity(rows.get(v.getId()).getQuantity()+1);
-			//update textview with current quantity
-			rows.get(v.getId()).getTv().setText(rows.get(v.getId()).getQuantity()+"");
+			if(rows.get(v.getId()).getProduct_quantity()>0)
+			{
+				//Increment the quantity purchased
+				rows.get(v.getId()).setQuantity(rows.get(v.getId()).getQuantity()+1);
+			
+				//update textview with current quantity
+				rows.get(v.getId()).getTvQuantity().setText(rows.get(v.getId()).getQuantity()+"");
+				
+				//decrement the product quantity
+				rows.get(v.getId()).setProduct_quantity(rows.get(v.getId()).getProduct_quantity()-1);
+				//update textview with current quantity
+				rows.get(v.getId()).getTv_p_quantity().setText(rows.get(v.getId()).getProduct_quantity()+"");
+			}
 			
 		}
 	}

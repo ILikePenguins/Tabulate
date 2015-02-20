@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,24 +36,21 @@ public class EventActivity extends Activity implements AsyncResponse
 	    {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.event_names);
-
 	        
-	     
-	    
 	        Button  btnAdd = (Button)findViewById(R.id.addEvent);
 	       
 	        btnAdd.setOnClickListener(new AddEventListener());
 	        etName = (EditText)findViewById(R.id.etEvent);
 	        datePicker = (DatePicker) findViewById(R.id.date);
-	        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list)
-	        		{
-	        		public View getView(int position, View convertView, ViewGroup parent) {
-	                View view = super.getView(position, convertView, parent);
-	                TextView text = (TextView) view.findViewById(android.R.id.text1);
-	                text.setTextColor(Color.BLACK);
-	                return view;
-	            }
-	        };
+	        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+//	        		{
+//	        		public View getView(int position, View convertView, ViewGroup parent) {
+//	                View view = super.getView(position, convertView, parent);
+//	                TextView text = (TextView) view.findViewById(android.R.id.text1);
+//	                text.setTextColor(Color.BLACK);
+//	                return view;
+//	            }
+//	        };
 	        
 	        parse=new Parse();
 	        

@@ -1,5 +1,4 @@
 package com.example.tabulate;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import parsing.ParseJson;
@@ -19,7 +18,6 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	  TextView pints ;
 	  TextView total;
 	  private String customer;
-	  private HashMap<String, Integer> text_ids;
 	  public void onCreate(Bundle savedInstanceState) 
 	    {
 		 
@@ -40,13 +38,9 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	        TextView name = (TextView)findViewById(R.id.profileNameBtn);////
 	        customer=getIntent().getExtras().getString("name");
 	        name.setText(customer);
-	        text_ids= (HashMap<String, Integer>) getIntent().getSerializableExtra("text_ids");
 	        addToMap("");
 	        //get bottles from db
 	        new Database (map,"sales/getBottlesPurchasedByCustomer",this);
-	        //new Database (map,"sales/getPintsPurchasedByCustomer",this).execute();
-	        
-	        //get pints from db
 	    }
 	  
 	  public void addToMap(String name)
@@ -62,18 +56,8 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    	  public void onClick(View v)
 	    	    {
 	    		 // new Database(map,"customers/paid").execute();
-	    		 System.out.println(text_ids.get(getIntent().getExtras().getString("name")));
-	    		 // TextView tv = (TextView) findViewById(R.id.name_list);
-	    		 // tv.setText("This is strike-thru");
-	    		  //tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-	    	       //cross name off
-	    		  //change status?
+	    		  //update that customer paid.
 	    	    }
-	    }
-	    
-	    public void displayTab()
-	    {
-	    	 //get # pints and bottles from database
 	    }
 	    
 	    public void processFinish(String output)
@@ -87,11 +71,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    		parse.changeTextView();
 	    		addToMap("");
 	    		new Database (map,"sales/getPintsPurchasedByCustomer",this);
-//	    		try {
-//					Thread.sleep(500);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
+
 	    	}
 	    	else if(output.contains("getPints"))
 			{
@@ -111,12 +91,6 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    	
 	    	
 	    	System.out.println("output: "+output);
-		}
-	    
-		public void addToHashMap(String s)
-		{
-			
-			
 		}
 		
 

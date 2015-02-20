@@ -4,6 +4,7 @@ package adapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,12 @@ public class NameAdapter extends BaseAdapter
 {
 	private ArrayList<String>  names;
 	private HashMap<String,Integer> text_ids;
-	
-	public NameAdapter (ArrayList<String> names)
+	private Activity activity;
+	static int ID=0;
+	public NameAdapter (ArrayList<String> names, Activity activity)
 	{
 		this.names=names;
+		this.activity=activity;
 		text_ids= new HashMap<String,Integer>();
 	}
 	public int getCount() {
@@ -32,6 +35,15 @@ public class NameAdapter extends BaseAdapter
 	public long getItemId(int position) {
 		return position;
 	}
+	
+	public void addToList()
+	{
+		for(String name: names)
+		{
+			TextView nameTextView= new TextView(activity);
+            nameTextView.setText(name);
+		}
+	}
 
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
@@ -43,14 +55,19 @@ public class NameAdapter extends BaseAdapter
                      System.out.println("1111");
              }
 			//View.generateViewId();
-            TextView nameTextView = (TextView) convertView.findViewById(R.id.name_view);
+           TextView nameTextView = (TextView) convertView.findViewById(R.id.name_view);
+			// TextView nameTextView= new TextView(activity);
+           nameTextView.setId(ID);
             nameTextView.setText(names.get(position));
+			 
             System.out.println("name "+ names.get(position));
             //set the id for the textview
             //nameTextView.setId(View.generateViewId());
-           // System.out.println("id "+ nameTextView.getId());
+            System.out.println("id "+ nameTextView.getId());
             //add name and id to hashmap
             text_ids.put(names.get(position), convertView.getId());
+            
+            ID++;
     }
 		return convertView;
 	}
