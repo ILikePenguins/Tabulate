@@ -1,6 +1,5 @@
 package parsing;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -19,11 +18,13 @@ public class ParseJson
 	private String[] columnNames;
 	private HashMap<Integer,String> customer_id;
 	private TextView tv;
-	private ArrayList<String> names;
-	
-	public ArrayList<String> getNames() {
-		return names;
+	private HashMap<String,Boolean>  customers;
+public HashMap<String, Boolean> getCustomers() {
+		return customers;
 	}
+	//	public ArrayList<String> getNames() {
+//		return names;
+//	}
 	public ParseJson(String output, TextView tv,String[] columnNames)
 	{
 		this.tv=tv;
@@ -39,7 +40,7 @@ public class ParseJson
 	{
 		this.adapter=adapter;
 		this.columnNames=columnNames;
-		names= new ArrayList<String>();
+		customers=new HashMap<String,Boolean>();
 		try 
 		{
 			jArray = new JSONArray(output);
@@ -55,6 +56,7 @@ public class ParseJson
 	        {
 			 str="";
 			 String id="";
+			 boolean paid=false;
 			 try 
 			 {
 				 //retrieve values for each column
@@ -63,6 +65,8 @@ public class ParseJson
             	{
 					if(s.equals("id"))
 						id=String.valueOf(json_data.getString(s));
+					else if(s.equals("paid"))
+						paid= Boolean.valueOf(json_data.getBoolean(s));
 					else
 						str= String.valueOf(json_data.getString(s));
 					
@@ -70,8 +74,8 @@ public class ParseJson
 				//add position and id to hashmap
 				customer_id.put(count, id);
 				//add name to adapter
-				adapter.add(str);
-				names.add(str);
+				//adapter.add(str);
+				customers.put(str,paid);
 				count++;
 				System.out.println(str);
 			 } catch (JSONException e) 

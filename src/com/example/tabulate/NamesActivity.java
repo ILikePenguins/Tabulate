@@ -28,6 +28,7 @@ public class NamesActivity extends Activity implements AsyncResponse
 private EditText etName ;
 private ArrayAdapter<String>   adapter;
 private ArrayList<String> list = new ArrayList<String>();
+
 private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 private String eventID;
 private Parse parse;
@@ -52,13 +53,8 @@ private ListView listView;
         
         
         etName = (EditText)findViewById(R.id.etAdd);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-
-        // set the lv variable to your list in the xml
-        ListView  lv=(ListView)findViewById(R.id.name_list);  
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
         
+        listView= (ListView) findViewById(R.id.name_list);
         
         map.put("name", getIntent().getExtras().getString("name"));
         //name and date will be sent together, parse then send
@@ -73,27 +69,7 @@ private ListView listView;
 	}
 	
     
-    public class OnItemClickListenerListViewItem implements OnItemClickListener 
-    {
-	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-	    {
-	    	//TextView tv= (TextView) findViewById((int)parent.getItemIdAtPosition(position));
-	    	//tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-	    	//get name of person clicked on
-
-	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
-	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        
-	        //pass values to the map activity
-	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
-	        addBeerIntent.putExtra("event_id",eventID);
-	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
-	        
-	        //start profile activity
-	      	startActivity(addBeerIntent);
-	    }
-
-	}
+   
     
 	public void loadCustomers(String output)
 	{
@@ -118,11 +94,10 @@ private ListView listView;
 			//addNamesToAdapter(output);
 			pj= new ParseJson(output,adapter,new String[]{"id","name"});
 			pj.AddToAdapter();
-//			fta = new NameAdapter(pj.getNames(),this);
-//			listView= (ListView) findViewById(R.id.name_list);
-//	        listView.setAdapter(fta);
-//	        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
-			//addNamesToAdapter(output);
+			fta = new NameAdapter(pj.getCustomers());
+			
+	        listView.setAdapter(fta);
+	        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
 		}
 	}
 	
@@ -142,7 +117,12 @@ private ListView listView;
     	        if(input.length() > 0)
     	        {
     	            // add string to the adapter
-    	        	adapter.add(input);
+    	        	//fta.add(input);
+    	        	pj.getCustomers().put(input, false);
+    	        	fta = new NameAdapter(pj.getCustomers());
+    	            listView.setAdapter(fta);
+    	            fta.notifyDataSetChanged();
+    	        	
     	            etName.setText("");
     	            
     	            //add to database
@@ -182,7 +162,29 @@ private ListView listView;
     	    }
     }
     
-	
+    public class OnItemClickListenerListViewItem implements OnItemClickListener 
+    {
+	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+	    {
+	    	//TextView tv= (TextView) findViewById((int)parent.getItemIdAtPosition(position));
+	    	//tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+	    	//get name of person clicked on
+
+	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
+	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        
+	        //pass values to the map activity
+	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
+	        addBeerIntent.putExtra("event_id",eventID);
+	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
+	        
+	        //start profile activity
+	      	startActivity(addBeerIntent);
+	      	
+	      	
+	    }
+
+	}
 
 	
 
