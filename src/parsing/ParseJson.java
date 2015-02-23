@@ -1,6 +1,7 @@
 package parsing;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import org.json.JSONArray;
@@ -18,12 +19,12 @@ public class ParseJson
 	private String[] columnNames;
 	private HashMap<Integer,String> customer_id;
 	private TextView tv;
-	private HashMap<String,Boolean>  customers;
+	private LinkedHashMap<String,Boolean>  customers;
 	private int count;
 public int getCount() {
 		return count;
 	}
-public HashMap<String, Boolean> getCustomers() {
+public LinkedHashMap<String, Boolean> getCustomers() {
 		return customers;
 	}
 	//	public ArrayList<String> getNames() {
@@ -44,7 +45,7 @@ public HashMap<String, Boolean> getCustomers() {
 	{
 		this.adapter=adapter;
 		this.columnNames=columnNames;
-		customers=new HashMap<String,Boolean>();
+		customers=new LinkedHashMap<String,Boolean>();
 		try 
 		{
 			jArray = new JSONArray(output);
@@ -70,13 +71,19 @@ public HashMap<String, Boolean> getCustomers() {
 					if(s.equals("id"))
 						id=String.valueOf(json_data.getString(s));
 					else if(s.equals("paid"))
-						paid= Boolean.valueOf(json_data.getBoolean(s));
+					{
+						int p= Integer.valueOf(json_data.getInt(s));
+						if(p==1)
+							paid=true;
+						//System.out.println("paid "+ p);
+					}
 					else
 						str= String.valueOf(json_data.getString(s));
 					
             	}
 				//add position and id to hashmap
 				customer_id.put(count, id);
+				System.out.println(str+" "+count+ " "+id );
 				//add name to adapter
 				//adapter.add(str);
 				customers.put(str,paid);

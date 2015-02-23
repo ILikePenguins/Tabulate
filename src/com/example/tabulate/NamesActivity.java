@@ -24,11 +24,11 @@ import database.AsyncResponse;
 import database.Database;
 
 
-public class NamesActivity extends Activity implements AsyncResponse,OnClickListener
+public class NamesActivity extends Activity implements AsyncResponse
 {
 private EditText etName ;
 private ArrayAdapter<String>   adapter;
-private ArrayList<String> list = new ArrayList<String>();
+//private ArrayList<String> list = new ArrayList<String>();
 
 private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 private String eventID;
@@ -102,7 +102,7 @@ private ArrayList<String> addedNames;
 		else if (output.contains("retrieveCustomersByEvent"))
 		{
 			//addNamesToAdapter(output);
-			pj= new ParseJson(output,adapter,new String[]{"id","name"});
+			pj= new ParseJson(output,adapter,new String[]{"id","name","paid"});
 			pj.AddToAdapter();
 			fta = new NameAdapter(pj.getCustomers());
 			listView.setAdapter(fta);
@@ -219,7 +219,7 @@ private ArrayList<String> addedNames;
 	    	System.out.println("name "+tv.getText());
 	    	//tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	    	//get name of person clicked on
-
+	    	System.out.println("id "+pj.getCustomer_id().get(position));
 	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
 	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        //pass values to the addbeer activity
@@ -235,14 +235,6 @@ private ArrayList<String> addedNames;
 
 	}
 
-	public void onClick(View v)
-	{
-		 String input = etName.getText().toString();
-	        if(input.length() > 0)
-	        {
-	        	addPerson(input);
-	        }
-	}
 
 	
 

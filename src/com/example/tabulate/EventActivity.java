@@ -83,7 +83,7 @@ public class EventActivity extends Activity implements AsyncResponse
 	    	            LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	    	            map.put("name", input);
 	    	            map.put("date", date);
-	    	            new Database (map,"events/create").execute();
+	    	            new Database (map,"events/create");
 	    	        }
 	    	    }
 	    }

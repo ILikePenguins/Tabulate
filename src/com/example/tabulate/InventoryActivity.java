@@ -21,6 +21,8 @@ public class InventoryActivity extends Activity implements AsyncResponse
 {
 	private static LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private static  Table table;
+
+
 	static String event_id;
 	
 	protected void onCreate(Bundle savedInstanceState)
@@ -130,9 +132,15 @@ public static class RowListener implements OnClickListener
 	    .setIcon(android.R.drawable.ic_dialog_alert)
 	     .show();
 	}
+	
+	
 
 	
 }
+public static Table getTable() {
+	return table;
+}
+
 		
 }
 

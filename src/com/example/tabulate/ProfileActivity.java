@@ -56,7 +56,9 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 
 	    	  public void onClick(View v)
 	    	    {
-	    		 // new Database(map,"customers/paid").execute();
+	    		  addToMap("");
+	    		  map.put("paid", "1");
+	    		  new Database(map,"sales/updatePaidStatus");
 	    		  //update that customer paid.
 	    		  System.out.println("id "+getIntent().getExtras().getString("customer_id"));
 	    	    }
@@ -67,7 +69,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    	ParseJson parse;
 	    	if(output.contains("getBottles"))
 	    	{
-	    		System.out.println("output: "+output);
+	    		System.out.println("bottles: "+output);
 	    		
 	    		parse = new ParseJson(output,bottles,new String[]{"SUM(s.quantity)"});
 	    		parse.changeTextView();
@@ -77,8 +79,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    	}
 	    	else if(output.contains("getPints"))
 			{
-	    		//System.out.println("**********fdsf");
-				//System.out.println("output: "+output);
+	    		System.out.println("pints "+output);
 				parse = new ParseJson(output,pints,new String[]{"SUM(s.quantity)"});
 	    		parse.changeTextView();
 	    		addToMap("");
@@ -87,6 +88,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    	
 	    	else if(output.contains("getTotal"))
 	    	{
+	    		System.out.println("total "+output);
 	    		parse = new ParseJson(output,total,new String[]{"SUM(s.cost_total)"});
 	    		parse.changeTextView();
 	    	}

@@ -85,33 +85,13 @@ public class Table
 					row=new Row();
 					for(String s: rowNames)
 	            	{
-						if(s.equals("type"))
-						{
-			                //type 
-			                TextView b3=new TextView(activity);
-			                b3.setPadding(10, 0, 0, 0);
-			                int type=json_data.getInt("type");
-			                String str3="";
-			                if(type==1)
-			                {
-			             	   str3= "Keg";
-			             	 //  b3.setTextColor(Color.CYAN);
-			                }
-			                else
-			                {
-			             	   str3="Bottle";
-			             	   //b3.setTextColor(Color.DKGRAY);
-			                }
-			                b3.setText(str3);
-			                b3.setTextSize(15);
-			                tr.addView(b3);
-						}
-						else
-							getRow(tr,json_data,s);
+						addRow(s,tr,json_data);
+
 	            	}
 				rows.put(rowNum, row);
                 tl.addView(tr);
                 rowNum++;
+                //draw lines between rows
                 final View vline1 = new View(activity);
                 vline1.setLayoutParams(new                
                 TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 1));
@@ -123,6 +103,60 @@ public class Table
 				}
             }
         }
+	}
+	
+	public void addRow(String s,TableRow tr,JSONObject json_data)
+	{
+
+		if(s.equals("type"))
+		{
+            //type 
+            TextView b3=new TextView(activity);
+            b3.setPadding(10, 0, 0, 0);
+            int type=-1;
+			try {
+				type = json_data.getInt("type");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+            String str3="";
+            if(type==1)
+            {
+         	   str3= "Keg";
+         	 //  b3.setTextColor(Color.CYAN);
+            }
+            else
+            {
+         	   str3="Bottle";
+         	   //b3.setTextColor(Color.DKGRAY);
+            }
+            b3.setText(str3);
+            b3.setTextSize(15);
+            tr.addView(b3);
+		}
+		else
+			getRow(tr,json_data,s);
+	}
+	
+	public void addOneRow(String s,JSONObject json_data)
+	{
+		TableRow tr=new TableRow(activity);
+          tr.setLayoutParams(new LayoutParams(
+          LayoutParams.MATCH_PARENT,
+          LayoutParams.WRAP_CONTENT));
+          tr.setOnClickListener(new InventoryActivity.RowListener(activity));
+          
+		row= new Row();
+		addRow(s,tr,json_data);
+		rows.put(rowNum, row);
+        tl.addView(tr);
+        rowNum++;
+        //draw lines between rows
+        final View vline1 = new View(activity);
+        vline1.setLayoutParams(new                
+        TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 1));
+        vline1.setBackgroundColor(Color.DKGRAY);
+        tl.addView(vline1);  // add line below each row  
 	}
 	
 	public void addColumn(TableRow tr, String colName)

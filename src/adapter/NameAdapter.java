@@ -1,7 +1,7 @@
 package adapter;
 
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -13,10 +13,10 @@ import android.widget.TextView;
 import com.example.tabulate.R;
 public class NameAdapter extends BaseAdapter
 {
-	private HashMap<String,Boolean>  customers;
+	private LinkedHashMap<String,Boolean>  customers;
 	private String[] keys;
 	private  int id=0;
-	public NameAdapter (HashMap<String,Boolean> customers)
+	public NameAdapter (LinkedHashMap<String,Boolean> customers)
 	{
 		this.customers=customers;
 		keys = customers.keySet().toArray(new String[customers.size()]);
