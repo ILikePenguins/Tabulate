@@ -23,6 +23,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private SalesTable table;
 	private Queue<LinkedHashMap<String,String>> q= new LinkedList<LinkedHashMap<String,String>>();
+	
 	 public void onCreate(Bundle savedInstanceState) 
 	    {
 		 
@@ -69,7 +70,8 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 			new Database (q.remove(),"sales/newSale",this);
 			
 		}
-		else if(q.isEmpty() && output.contains("updated"))
+		else if(q.isEmpty() && output.contains("updated")
+				|| output.contains("sales/newSale"))
 			{
 			//start the sales activity once all beers are updated
 				System.out.println("starting profile");

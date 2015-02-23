@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout 
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
+    
 
-    <Button
-        android:id="@+id/inventoryBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Inventory" />
   
         <TextView
         android:id="@+id/name_view"
@@ -19,32 +15,59 @@
         android:paddingBottom="5dp"
         />
 
-    <EditText
-        android:id="@+id/etAdd"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/inventoryBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/name_view"
+        android:text="Inventory" />
 
     <Button
         android:id="@+id/addTaskBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/inventoryBtn"
+        android:layout_marginTop="14dp"
         android:text="Add Person" />
 
-    <Button
-        android:id="@+id/removeBtn"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/etAdd"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Remove" />
+        android:layout_above="@+id/removeBtn"
+        android:layout_toLeftOf="@+id/addTaskBtn"
+        android:ems="10"
+        android:text="asds" >
+
+        <requestFocus />
+    </EditText>
     
-	<ListView 
-	     android:layout_width="match_parent"
-	     android:layout_height="match_parent" 
-	     android:id="@+id/name_list"
-	     android:divider="#FFFFFF"
-	     android:textColor="#ffffff"
-	     android:dividerHeight="4px" >
-	    
+       android:layout_width="match_parent"
+       android:layout_height="335dp" >
+
+	<ListView
+	    android:id="@+id/name_list"
+	    android:layout_width="match_parent"
+	    android:layout_height="335dp"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/removeBtn"
+	    android:divider="#FFFFFF"
+	    android:dividerHeight="4px"
+	    android:textColor="#ffffff" >
+
 	</ListView>
-	
-</LinearLayout>
+
+	<Button
+	    android:id="@+id/removeBtn"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_below="@+id/addTaskBtn"
+	    android:layout_marginTop="15dp"
+	    android:visibility="gone"
+	    android:text="Remove" />
+
+</RelativeLayout >

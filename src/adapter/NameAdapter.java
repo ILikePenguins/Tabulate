@@ -15,6 +15,7 @@ public class NameAdapter extends BaseAdapter
 {
 	private HashMap<String,Boolean>  customers;
 	private String[] keys;
+	private  int id=0;
 	public NameAdapter (HashMap<String,Boolean> customers)
 	{
 		this.customers=customers;
@@ -44,8 +45,12 @@ public class NameAdapter extends BaseAdapter
 			 TextView nameTextView = (TextView) convertView.findViewById(R.id.name_view);
 			 
 			 nameTextView.setText(keys[position]);
+			 //set id according to position added in list
+			 nameTextView.setId(id);
+			 System.out.println(keys[position]);
 			 if(customers.get(keys[position]))
 				 nameTextView.setPaintFlags(nameTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			 id++;
     }
 		return convertView;
 	}

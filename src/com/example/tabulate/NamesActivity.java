@@ -2,13 +2,14 @@ package com.example.tabulate;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import parsing.Parse;
 import parsing.ParseJson;
 import adapter.NameAdapter;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +24,7 @@ import database.AsyncResponse;
 import database.Database;
 
 
-public class NamesActivity extends Activity implements AsyncResponse
+public class NamesActivity extends Activity implements AsyncResponse,OnClickListener
 {
 private EditText etName ;
 private ArrayAdapter<String>   adapter;
@@ -35,7 +36,7 @@ private Parse parse;
 private ParseJson pj;
 private NameAdapter fta;
 private ListView listView;
-
+private ArrayList<String> addedNames;
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -53,14 +54,17 @@ private ListView listView;
         
         
         etName = (EditText)findViewById(R.id.etAdd);
-        
+        //listview
         listView= (ListView) findViewById(R.id.name_list);
+       
+        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
         
         map.put("name", getIntent().getExtras().getString("name"));
         //name and date will be sent together, parse then send
         map.put("date", getIntent().getExtras().getString("date"));
         //get the event id
-        new Database (map,"events/getEventID",this);   
+        new Database (map,"events/getEventID",this);
+        addedNames=new ArrayList<String>();
        
     }
     public ArrayAdapter<String> getAdapter()
@@ -79,7 +83,13 @@ private ListView listView;
 		//with the event id, customers can now be retrieved
 	    new Database (map,"customers/retrieveCustomersByEvent",this);
 	}
-	
+	public void loadCustomers()
+	{
+		map.put("name","");
+		map.put("event_id",eventID);
+		//with the event id, customers can now be retrieved
+	    new Database (map,"customers/retrieveCustomersByEvent",this);
+	}
     
 	public void processFinish(String output)
 	{
@@ -89,18 +99,42 @@ private ListView listView;
 			System.out.println("loading customers");
 			loadCustomers(output);
 		}
-		else
+		else if (output.contains("retrieveCustomersByEvent"))
 		{
 			//addNamesToAdapter(output);
 			pj= new ParseJson(output,adapter,new String[]{"id","name"});
 			pj.AddToAdapter();
 			fta = new NameAdapter(pj.getCustomers());
+			listView.setAdapter(fta);
+	       
+		}
+		else if(output.contains("successfully"))
+		{
 			
-	        listView.setAdapter(fta);
-	        listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
+			addCustomerId(output);
 		}
 	}
 	
+	public void addCustomerId(String output)
+	{
+		Pattern p = Pattern.compile("-?\\d+");
+		Matcher m = p.matcher(output);
+		//get if form response
+		while (m.find()) 
+		{
+			if(m.group().equals("1"))
+				continue;
+			else
+			{
+				System.out.println(m.group());
+				pj.getCustomer_id().put(pj.getCount(), m.group());
+			}
+		  
+		}
+		addedNames.remove(0);
+		
+		
+	}
 
 	public void getEventID(String response)
 	{
@@ -108,6 +142,25 @@ private ListView listView;
 		eventID=parse.id();
 		
 	}
+	
+	public void addPerson(String input)
+	{
+		 // add string to the adapter and update view
+		addedNames.add(input);
+    	pj.getCustomers().put(input, false);
+    	fta = new NameAdapter(pj.getCustomers());
+        listView.setAdapter(fta);
+        fta.notifyDataSetChanged();
+    	
+        etName.setText("");
+        
+        //add to database
+        LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
+        map.put("name", input);
+        map.put("event_id",eventID);
+        new Database(map,"customers/create",this);
+	}
+	
 	class AddPersonListener implements OnClickListener
     {
 
@@ -116,20 +169,7 @@ private ListView listView;
     	        String input = etName.getText().toString();
     	        if(input.length() > 0)
     	        {
-    	            // add string to the adapter
-    	        	//fta.add(input);
-    	        	pj.getCustomers().put(input, false);
-    	        	fta = new NameAdapter(pj.getCustomers());
-    	            listView.setAdapter(fta);
-    	            fta.notifyDataSetChanged();
-    	        	
-    	            etName.setText("");
-    	            
-    	            //add to database
-    	            LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
-    	            map.put("name", input);
-    	            map.put("event_id",eventID);
-    	            new Database(map,"customers/create");
+    	        	addPerson(input);
     	        }
     	    }
     }
@@ -162,19 +202,28 @@ private ListView listView;
     	    }
     }
     
+    class Refreshlistener implements OnClickListener
+    {
+
+    	  public void onClick(View v)
+    	    {
+    		  loadCustomers();
+    	    }
+    }
+    
     public class OnItemClickListenerListViewItem implements OnItemClickListener 
     {
 	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	    {
-	    	//TextView tv= (TextView) findViewById((int)parent.getItemIdAtPosition(position));
+	    	TextView tv= (TextView) findViewById((int)parent.getItemIdAtPosition(position));
+	    	System.out.println("name "+tv.getText());
 	    	//tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	    	//get name of person clicked on
 
 	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
 	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        
-	        //pass values to the map activity
-	        addBeerIntent.putExtra("name", parent.getItemAtPosition(position).toString());
+	        //pass values to the addbeer activity
+	        addBeerIntent.putExtra("name", tv.getText());
 	        addBeerIntent.putExtra("event_id",eventID);
 	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
 	        
@@ -184,6 +233,15 @@ private ListView listView;
 	      	
 	    }
 
+	}
+
+	public void onClick(View v)
+	{
+		 String input = etName.getText().toString();
+	        if(input.length() > 0)
+	        {
+	        	addPerson(input);
+	        }
 	}
 
 	

@@ -13,11 +13,12 @@ import database.Database;
 
 public class ProfileActivity extends FragmentActivity implements AsyncResponse
 {
-	  LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
-	  TextView bottles;
-	  TextView pints ;
-	  TextView total;
+	  private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
+	  private TextView bottles;
+	  private TextView pints ;
+	  private TextView total;
 	  private String customer;
+	  
 	  public void onCreate(Bundle savedInstanceState) 
 	    {
 		 
@@ -57,6 +58,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    	    {
 	    		 // new Database(map,"customers/paid").execute();
 	    		  //update that customer paid.
+	    		  System.out.println("id "+getIntent().getExtras().getString("customer_id"));
 	    	    }
 	    }
 	    

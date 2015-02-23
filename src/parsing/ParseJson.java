@@ -19,6 +19,10 @@ public class ParseJson
 	private HashMap<Integer,String> customer_id;
 	private TextView tv;
 	private HashMap<String,Boolean>  customers;
+	private int count;
+public int getCount() {
+		return count;
+	}
 public HashMap<String, Boolean> getCustomers() {
 		return customers;
 	}
@@ -50,7 +54,7 @@ public HashMap<String, Boolean> getCustomers() {
 		customer_id=new HashMap<Integer,String>();
 	}
 	public void AddToAdapter()
-	{	int count=0;
+	{	count=0;
 		String str="";
 		 for(int i=0;i<jArray.length();i++)
 	        {
