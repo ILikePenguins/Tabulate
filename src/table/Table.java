@@ -1,6 +1,8 @@
 package table;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -138,25 +140,44 @@ public class Table
 			getRow(tr,json_data,s);
 	}
 	
-	public void addOneRow(String s,JSONObject json_data)
+
+	
+	public void addSingleRow(LinkedHashMap<String, String> values)
 	{
-		TableRow tr=new TableRow(activity);
-          tr.setLayoutParams(new LayoutParams(
-          LayoutParams.MATCH_PARENT,
-          LayoutParams.WRAP_CONTENT));
-          tr.setOnClickListener(new InventoryActivity.RowListener(activity));
-          
-		row= new Row();
-		addRow(s,tr,json_data);
-		rows.put(rowNum, row);
-        tl.addView(tr);
-        rowNum++;
-        //draw lines between rows
-        final View vline1 = new View(activity);
-        vline1.setLayoutParams(new                
-        TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 1));
-        vline1.setBackgroundColor(Color.DKGRAY);
-        tl.addView(vline1);  // add line below each row  
+		 TableRow tr=new TableRow(activity);
+         tr.setLayoutParams(new LayoutParams(
+         LayoutParams.MATCH_PARENT,
+         LayoutParams.WRAP_CONTENT));
+         tr.setOnClickListener(new InventoryActivity.RowListener(activity));
+         
+			row=new Row();
+			
+			for(Entry<String, String> entry : values.entrySet())
+        	{
+				 TextView tv=new TextView(activity);
+				 tv.setText(entry.getValue());
+				 tv.setTextSize(15);
+				 tr.setId(rowNum);
+				 if(entry.getKey().equals("name"))
+				    	row.setName(entry.getValue());
+				    if(entry.getKey().equals("id"))
+				    	row.setProductId(entry.getValue());
+				    else
+				    	tr.addView(tv);
+        	}
+			
+			rows.put(rowNum, row);
+	        tl.addView(tr);
+	        rowNum++;
+	        //draw lines between rows
+	        final View vline1 = new View(activity);
+	        vline1.setLayoutParams(new                
+	        TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 1));
+	        vline1.setBackgroundColor(Color.DKGRAY);
+	        tl.addView(vline1);  // add line below each row  
+			
+			
+		
 	}
 	
 	public void addColumn(TableRow tr, String colName)

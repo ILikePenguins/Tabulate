@@ -39,7 +39,7 @@
         android:layout_above="@+id/removeBtn"
         android:layout_toLeftOf="@+id/addTaskBtn"
         android:ems="10"
-        android:text="asds" >
+        android:text="" >
 
         <requestFocus />
     </EditText>
@@ -69,5 +69,13 @@
 	    android:layout_marginTop="15dp"
 	    android:visibility="gone"
 	    android:text="Remove" />
+
+	<Button
+	    android:id="@+id/refreshBtn"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	    android:text="Refresh" />
 
 </RelativeLayout >

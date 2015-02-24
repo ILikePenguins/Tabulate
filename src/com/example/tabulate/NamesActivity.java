@@ -47,10 +47,12 @@ private ArrayList<String> addedNames;
         Button  btnAdd = (Button)findViewById(R.id.addTaskBtn);
         Button  btnRemove = (Button)findViewById(R.id.removeBtn);
         Button  btnInven = (Button)findViewById(R.id.inventoryBtn);
+        Button btnRefresh=(Button)findViewById(R.id.refreshBtn);
         //button listeners
         btnAdd.setOnClickListener(new AddPersonListener());
         btnRemove.setOnClickListener(new RemovePersonListener());
         btnInven.setOnClickListener(new InventoryListener());
+        btnRefresh.setOnClickListener(new RefreshListener());
         
         
         etName = (EditText)findViewById(R.id.etAdd);
@@ -72,8 +74,6 @@ private ArrayList<String> addedNames;
 		return adapter;
 	}
 	
-    
-   
     
 	public void loadCustomers(String output)
 	{
@@ -202,13 +202,15 @@ private ArrayList<String> addedNames;
     	    }
     }
     
-    class Refreshlistener implements OnClickListener
+    class RefreshListener implements OnClickListener
     {
 
     	  public void onClick(View v)
     	    {
     		  loadCustomers();
     	    }
+
+	
     }
     
     public class OnItemClickListenerListViewItem implements OnItemClickListener 

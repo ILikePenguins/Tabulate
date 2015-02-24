@@ -1,7 +1,7 @@
 package form;
 import java.util.LinkedHashMap;
 
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.tabulate.InventoryActivity;
 import com.example.tabulate.R;
 
 import database.AsyncResponse;
@@ -22,10 +23,10 @@ import database.Database;
  public class FormDialog extends DialogFragment implements AsyncResponse
  {
 	 boolean isBottle;
-	 private Activity activity;
+	 private InventoryActivity activity;
 	 private static LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	 private String event_id;
-	 public FormDialog(boolean isBottle, Activity activity, String event_id)
+	 public FormDialog(boolean isBottle, InventoryActivity activity, String event_id)
 	 {
 		 this.isBottle=isBottle;
 		 this.activity= activity;
@@ -71,16 +72,21 @@ public AlertDialog form()
     	public void onClick(DialogInterface dialog, int which)
         {//save info
             dialog.dismiss();
-            
             if(isBottle)
+            {
             	addToMap(nameBox.getText().toString(),"",beerCost.getText().toString(),beerCost.getText().toString(),beerQuantity.getText().toString(),"");
+            }
             else
+            {
             	addToMap(nameBox.getText().toString(),"1",beerCost.getText().toString(),beerCost.getText().toString(),"","");
+            }
             
             new Database(map,"beer/create");
             
+            activity.refresh();
+
             
-            System.out.println("Asdasdsadsad");
+
         }
     });
     //cancel button
@@ -111,6 +117,14 @@ public void processFinish(String output)
 {
 	System.out.println(output);
 	
+}
+
+public class SaveListener implements DialogInterface.OnClickListener
+{
+	public void onClick(DialogInterface dialog, int which)
+	{
+		
+	} 
 }
 
 }

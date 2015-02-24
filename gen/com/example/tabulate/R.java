@@ -1095,7 +1095,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f05005c;
+        public static final int action_settings=0x7f05005d;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int addBottle=0x7f050057;
         public static final int addEvent=0x7f050051;
@@ -1143,6 +1143,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
+        public static final int refreshBtn=0x7f05005c;
         public static final int relativeLayout1=0x7f050056;
         public static final int relativeLayoutSale=0x7f05004d;
         public static final int removeBtn=0x7f05005b;

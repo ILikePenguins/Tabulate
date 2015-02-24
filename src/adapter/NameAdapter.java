@@ -3,6 +3,7 @@ package adapter;
 
 import java.util.LinkedHashMap;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,9 +48,12 @@ public class NameAdapter extends BaseAdapter
 			 nameTextView.setText(keys[position]);
 			 //set id according to position added in list
 			 nameTextView.setId(id);
-			 System.out.println(keys[position]);
+			// System.out.println(keys[position]);
 			 if(customers.get(keys[position]))
+			 {
+				 nameTextView.setTextColor(Color.RED);
 				 nameTextView.setPaintFlags(nameTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			 }
 			 id++;
     }
 		return convertView;

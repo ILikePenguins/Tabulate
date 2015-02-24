@@ -83,7 +83,7 @@ public LinkedHashMap<String, Boolean> getCustomers() {
             	}
 				//add position and id to hashmap
 				customer_id.put(count, id);
-				System.out.println(str+" "+count+ " "+id );
+				//System.out.println(str+" "+count+ " "+id );
 				//add name to adapter
 				//adapter.add(str);
 				customers.put(str,paid);

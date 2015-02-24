@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import database.AsyncResponse;
 import database.Database;
 
@@ -61,6 +62,8 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    		  new Database(map,"sales/updatePaidStatus");
 	    		  //update that customer paid.
 	    		  System.out.println("id "+getIntent().getExtras().getString("customer_id"));
+	    		  Toast.makeText(getApplicationContext(), customer+" successfully paid",
+	    				   Toast.LENGTH_LONG).show();
 	    	    }
 	    }
 	    

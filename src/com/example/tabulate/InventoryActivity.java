@@ -88,10 +88,16 @@ public void processFinish(String output)
 		String[] rowNames={"name","quantity","cost_each","type","id"};
 		table = new Table(output,(TableLayout) findViewById(R.id.tableInventory),this,colNames,rowNames);
 		table.buildTable();
+		
 	
 	}
 }
 
+public void refresh()
+{
+	addToMap("","","","","","");
+    new Database (map,"beer/retrieveBottlesAndPints",this);
+}
 
 public static class RowListener implements OnClickListener
 {
