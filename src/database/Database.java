@@ -17,18 +17,16 @@ public class Database extends AsyncTask<String, String, String>
 	JSONArray array;
 	List<NameValuePair> params = new ArrayList<NameValuePair>();
 	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
-	 JSONParser jsonParser = new JSONParser();//**********************///////////////////////////////////////////////////
-	 String url="http://192.168.1.64:8080/android_connect/";
-	 String response;
-	 public AsyncResponse delegate;
-	 private boolean postexec;
-	 String request;
+	JSONParser jsonParser = new JSONParser();//**********************///////////////////////////////////////////////////
+	String url="http://192.168.1.64:8080/android_connect/";
+	String response;
+	public AsyncResponse delegate;
+	String request;
 	 //used when response is not needed
 	public Database (LinkedHashMap<String,String> map, String url) 
 	{
 		this.map=map;
 		this.url+=url;
-		postexec=false;
 		this.request=url;
 		execute();
 	}
@@ -38,7 +36,6 @@ public class Database extends AsyncTask<String, String, String>
 	{
 		
 		this.delegate=delegate;
-		postexec=true;
 		this.map=map;
 		this.url+=url;
 		this.request=url;
@@ -73,11 +70,10 @@ public class Database extends AsyncTask<String, String, String>
 
 	   protected void onPostExecute(String result) 
 	   {
-		   if(postexec)
-		   {
+		   
 		      delegate.processFinish(result);
 		  
-		   }
+		   
 	   }
 		   
 

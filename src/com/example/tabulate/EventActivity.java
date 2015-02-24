@@ -109,7 +109,6 @@ public class EventActivity extends Activity implements AsyncResponse
 		    }
 
 		}
-//
 		public void processFinish(String output)
 		{
 			addEventsToAdapter(output);

@@ -72,9 +72,13 @@ public LinkedHashMap<String, Boolean> getCustomers() {
 						id=String.valueOf(json_data.getString(s));
 					else if(s.equals("paid"))
 					{
-						int p= Integer.valueOf(json_data.getInt(s));
-						if(p==1)
-							paid=true;
+						if(!json_data.isNull(s))
+						{
+							int p= Integer.valueOf(json_data.getInt(s));
+							if(p==1)
+								paid=true;
+						}
+						
 						//System.out.println("paid "+ p);
 					}
 					else

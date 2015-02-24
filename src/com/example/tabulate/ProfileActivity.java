@@ -86,7 +86,7 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 				parse = new ParseJson(output,pints,new String[]{"SUM(s.quantity)"});
 	    		parse.changeTextView();
 	    		addToMap("");
-	    		new Database (map,"sales/getTotalForCustomer",this);
+	    		new Database (map,"sales/getTotalUnpaidForCustomer",this);
 			}
 	    	
 	    	else if(output.contains("getTotal"))
