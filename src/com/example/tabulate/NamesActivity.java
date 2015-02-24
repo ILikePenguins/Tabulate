@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,22 +26,18 @@ import database.Database;
 public class NamesActivity extends Activity implements AsyncResponse
 {
 private EditText etName ;
-private ArrayAdapter<String>   adapter;
-//private ArrayList<String> list = new ArrayList<String>();
-
 private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 private String eventID;
-private Parse parse;
 private ParseJson pj;
-private NameAdapter fta;
+private NameAdapter nameAdapter;
 private ListView listView;
 private ArrayList<String> addedNames;
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.name_list);
 
-        parse=new Parse();
         //buttons
         Button  btnAdd = (Button)findViewById(R.id.addTaskBtn);
         Button  btnRemove = (Button)findViewById(R.id.removeBtn);
@@ -69,11 +64,7 @@ private ArrayList<String> addedNames;
         addedNames=new ArrayList<String>();
        
     }
-    public ArrayAdapter<String> getAdapter()
-    {
-		return adapter;
-	}
-	
+
     
 	public void loadCustomers(String output)
 	{
@@ -93,19 +84,19 @@ private ArrayList<String> addedNames;
     
 	public void processFinish(String output)
 	{
-		System.out.println("output: "+ output);
+		//System.out.println("output: "+ output);
 		if(output.contains("getEventID"))
 		{
-			System.out.println("loading customers");
+			//System.out.println("loading customers");
 			loadCustomers(output);
 		}
 		else if (output.contains("retrieveCustomersByEvent"))
 		{
 			//addNamesToAdapter(output);
-			pj= new ParseJson(output,adapter,new String[]{"id","name","paid"});
+			pj= new ParseJson(output,new String[]{"id","name","paid"});
 			pj.AddToAdapter();
-			fta = new NameAdapter(pj.getCustomers());
-			listView.setAdapter(fta);
+			nameAdapter = new NameAdapter(pj.getCustomers());
+			listView.setAdapter(nameAdapter);
 	       
 		}
 		else if(output.contains("successfully"))
@@ -138,6 +129,7 @@ private ArrayList<String> addedNames;
 
 	public void getEventID(String response)
 	{
+		Parse parse = new Parse();
 		parse.setString(response);
 		eventID=parse.id();
 		
@@ -148,9 +140,9 @@ private ArrayList<String> addedNames;
 		 // add string to the adapter and update view
 		addedNames.add(input);
     	pj.getCustomers().put(input, false);
-    	fta = new NameAdapter(pj.getCustomers());
-        listView.setAdapter(fta);
-        fta.notifyDataSetChanged();
+    	nameAdapter = new NameAdapter(pj.getCustomers());
+        listView.setAdapter(nameAdapter);
+        nameAdapter.notifyDataSetChanged();
     	
         etName.setText("");
         
@@ -184,7 +176,6 @@ private ArrayList<String> addedNames;
     	        {
     	            // add string to the adapter
     	        	System.out.println("*****"+input);
-    	            adapter.remove(input);
     	            etName.setText("");
     	        }
     	    }

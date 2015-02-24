@@ -2,20 +2,17 @@ package parsing;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class ParseJson 
 {
 	private JSONArray jArray;
 	private JSONObject json_data;
-	private ArrayAdapter<String> adapter;
 	private String[] columnNames;
 	private HashMap<Integer,String> customer_id;
 	private TextView tv;
@@ -27,9 +24,7 @@ public int getCount() {
 public LinkedHashMap<String, Boolean> getCustomers() {
 		return customers;
 	}
-	//	public ArrayList<String> getNames() {
-//		return names;
-//	}
+
 	public ParseJson(String output, TextView tv,String[] columnNames)
 	{
 		this.tv=tv;
@@ -41,9 +36,8 @@ public LinkedHashMap<String, Boolean> getCustomers() {
 			e.printStackTrace();
 		}
 	}
-	public ParseJson(String output, ArrayAdapter<String> adapter,String[] columnNames)
+	public ParseJson(String output, String[] columnNames)
 	{
-		this.adapter=adapter;
 		this.columnNames=columnNames;
 		customers=new LinkedHashMap<String,Boolean>();
 		try 
@@ -92,7 +86,7 @@ public LinkedHashMap<String, Boolean> getCustomers() {
 				//adapter.add(str);
 				customers.put(str,paid);
 				count++;
-				System.out.println(str);
+				//System.out.println(str);
 			 } catch (JSONException e) 
 			 {
 				e.printStackTrace();

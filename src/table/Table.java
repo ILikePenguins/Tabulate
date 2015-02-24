@@ -1,8 +1,6 @@
 package table;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONException;

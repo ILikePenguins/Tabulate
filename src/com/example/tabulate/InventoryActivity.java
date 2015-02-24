@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TableLayout;
-import android.widget.Toast;
 import database.AsyncResponse;
 import database.Database;
 import form.FormDialog;
@@ -21,8 +20,6 @@ public class InventoryActivity extends Activity implements AsyncResponse
 {
 	private static LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private static  Table table;
-
-
 	static String event_id;
 	
 	protected void onCreate(Bundle savedInstanceState)
@@ -74,16 +71,12 @@ public static void addToMap(String name, String keg, String costp,String costb,S
 
 public void processFinish(String output) 
 {
-		//addBeersToAdapter(output);
 	if(output.contains("*beer/create"))
 		{
-		//TODO check when beer is added, display confirmation
-			System.out.println("asdasd");
-			Toast.makeText(getApplicationContext(), output,
-				   Toast.LENGTH_LONG).show();
 		}
 	else if(output.contains("retrieveBottlesAndPints"))
 	{
+		//get resposne from DB and add them to table 
 		String[] colNames={"Name","Quantity","Cost_Each","Type"};
 		String[] rowNames={"name","quantity","cost_each","type","id"};
 		table = new Table(output,(TableLayout) findViewById(R.id.tableInventory),this,colNames,rowNames);

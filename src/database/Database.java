@@ -22,12 +22,14 @@ public class Database extends AsyncTask<String, String, String>
 	String response;
 	public AsyncResponse delegate;
 	String request;
+	private boolean postexec;
 	 //used when response is not needed
 	public Database (LinkedHashMap<String,String> map, String url) 
 	{
 		this.map=map;
 		this.url+=url;
 		this.request=url;
+		postexec=false;
 		execute();
 	}
 	
@@ -39,6 +41,7 @@ public class Database extends AsyncTask<String, String, String>
 		this.map=map;
 		this.url+=url;
 		this.request=url;
+		postexec=true;
 		execute();
 	}
 
@@ -70,9 +73,10 @@ public class Database extends AsyncTask<String, String, String>
 
 	   protected void onPostExecute(String result) 
 	   {
-		   
+		   if(postexec)
+		   {
 		      delegate.processFinish(result);
-		  
+		   }
 		   
 	   }
 		   

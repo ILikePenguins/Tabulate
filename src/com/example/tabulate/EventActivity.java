@@ -19,7 +19,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView;
 import database.AsyncResponse;
 import database.Database;
 
@@ -53,17 +52,34 @@ public class EventActivity extends Activity implements AsyncResponse
 	        
 	        parse=new Parse();
 	        
-	        // set the lv variable to your list in the xml
+	        //listview
 	        ListView  lv=(ListView)findViewById(R.id.event_list);  
 	        lv.setAdapter(adapter);
 	        lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
 	        
+	        //parameters for DB
 	        map.put("name", "");
 	        map.put("date", "");
+	        //request events
 	        new Database (map,"events/retrieve",this);
 
-	       
 	    }
+		public void processFinish(String output)
+		{
+			addEventsToAdapter(output);
+		}
+		
+	  public void addEventsToAdapter(String response)
+		{
+			//System.out.println(response);
+			parse.setString(response);
+			String tokens[]=parse.NameDate();
+			for(String s: tokens)
+			{
+				// add each person to the adapter list
+				adapter.add(s);
+			}
+		}
 	  
 		class AddEventListener implements OnClickListener
 	    {
@@ -73,11 +89,13 @@ public class EventActivity extends Activity implements AsyncResponse
 	    	        String input = etName.getText().toString();
 	    	        if(input.length() > 0)
 	    	        {
-	    	            // add string to the adapter
+	    	           
 	    	        	System.out.println("*****"+input);
-	    	            adapter.add(input);
+	    	            
 	    	            etName.setText("");
 	    	            String date=datePicker.getYear()+"-" + datePicker.getMonth()+"-"+datePicker.getDayOfMonth();
+	    	            // add string to the adapter
+	    	            adapter.add(input+" "+date);
 	    	            //mysql format YY-MM-DD or YYYY-MM-DD
 	    	            //add to database
 	    	            LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
@@ -109,22 +127,9 @@ public class EventActivity extends Activity implements AsyncResponse
 		    }
 
 		}
-		public void processFinish(String output)
-		{
-			addEventsToAdapter(output);
-		}
+	
 
-		public void addEventsToAdapter(String response)
-		{
-			System.out.println(response);
-			parse.setString(response);
-			String tokens[]=parse.NameDate();
-			for(String s: tokens)
-			{
-				// add each person to the adapter list
-				adapter.add(s);
-			}
-		}
+		
 
 
 
