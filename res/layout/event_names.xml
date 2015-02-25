@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/arrow">
     
     <Button
          android:id="@+id/addEvent"
@@ -16,7 +17,7 @@
         android:layout_width="283dp"
         android:layout_height="355dp"
         android:layout_below="@id/addEvent"
-        android:dividerHeight="4px">
+        android:dividerHeight="4dp">
     </ListView>
     
         <EditText

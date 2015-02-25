@@ -30,7 +30,8 @@ public class EventActivity extends Activity implements AsyncResponse
 	private LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private DatePicker datePicker;
 	private Parse parse; 
-	  protected void onCreate(Bundle savedInstanceState)
+	
+	protected void onCreate(Bundle savedInstanceState)
 	    {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.event_names);
@@ -93,7 +94,8 @@ public class EventActivity extends Activity implements AsyncResponse
 	    	        	System.out.println("*****"+input);
 	    	            
 	    	            etName.setText("");
-	    	            String date=datePicker.getYear()+"-" + datePicker.getMonth()+"-"+datePicker.getDayOfMonth();
+	    	            String date=datePicker.getYear()+"-" + (datePicker.getMonth()+1)+"-"+datePicker.getDayOfMonth();
+	    	            System.out.println(date);
 	    	            // add string to the adapter
 	    	            adapter.add(input+" "+date);
 	    	            //mysql format YY-MM-DD or YYYY-MM-DD
@@ -125,12 +127,5 @@ public class EventActivity extends Activity implements AsyncResponse
 		        //start names activity
 		      	startActivity(namesIntent);
 		    }
-
 		}
-	
-
-		
-
-
-
 }

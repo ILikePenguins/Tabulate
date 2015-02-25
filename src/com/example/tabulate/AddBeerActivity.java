@@ -37,16 +37,17 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	        //buttons
 	        Button  btnProfile = (Button)findViewById(R.id.btnProfile);
 	        btnProfile.setOnClickListener(new ProfileListener());
-	        addToMap("","","");
+	        addToMap("","","","");
 	        //get bottles from db
 	        new Database (map,"sales/retrieveBottlesAndPintsSales",this);
 	    }
 	
-	  public void addToMap(String product_id, String quantity,String amount)
+	  public void addToMap(String product_id, String quantity,String amount,String dec)
 	  {
 	  	    map.put("product_id", product_id);
 	        map.put("quantity", quantity);
 	        map.put("amount", amount);
+	        map.put("dec",dec);
 	        map.put("customer_id",getIntent().getExtras().getString("customer_id"));
 	        map.put("event_id", getIntent().getExtras().getString("event_id"));
 	       // System.out.println(product_id+","+quantity+",");
@@ -54,7 +55,10 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	
 	public void processFinish(String output) 
 	{
-		//System.out.println("output "+output);
+		System.out.println("output "+output);
+		//date off by a month
+		// sales are updating , need to current quanity per customer vs amount purchased, only sale if greater
+		// for decrement, need to update the sale id
 		if(output.contains("name"))
 		{ 
 			//build the table
@@ -81,7 +85,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 			System.out.println("output "+output);
 	}
 	
-	public void rowsChanged()
+	public void addChangedRowsToQueue()
 	{
 		//get the rows that were changed, add them to db
 		//adds to queue first
@@ -92,14 +96,23 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 		    if(value.isChanged())
 		    {
 		    	map= new LinkedHashMap<String, String>();
-		    	addToMap(value.getProductId(),value.getQuantity()+"",value.getProduct_quantity()+"");
+		    	if(value.quantityDec())
+		    	{
+		    		addToMap(value.getProductId()
+		    				,value.getQuantity()+"",value.getProduct_quantity()+"","1");
+		    		System.out.println("dec");
+		    	}
+		    	else
+		    		addToMap(value.getProductId()
+		    				,value.getQuantity()+"",value.getProduct_quantity()+"","0");
 		    	if(count==0)
 		    	{
 			    	new Database (map,"sales/newSale",this);
 		    	}
 		    	else
 		    		q.add(map);
-		    	
+		    	value.setOriginal_s_quantity(value.getQuantity());
+		    	value.setChanged(false);
 		    	count++;
 		    }
 		}
@@ -113,7 +126,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 
     	  public void onClick(View v)
     	    {
-    		  rowsChanged();
+    		  addChangedRowsToQueue();
     	    }
     }
     

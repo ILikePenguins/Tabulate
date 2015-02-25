@@ -38,16 +38,17 @@ public class NameAdapter extends BaseAdapter
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
 		{
-			 //if (convertView == null) 
-             //{
+			// if (convertView == null) 
+           // {
                      LayoutInflater inflater = LayoutInflater.from(parent.getContext());
                      convertView = inflater.inflate(R.layout.list_names, parent, false);
-             //}
+           //  }
 			 TextView nameTextView = (TextView) convertView.findViewById(R.id.name_view);
 			 
 			 nameTextView.setText(keys[position]);
 			 //set id according to position added in list
 			 nameTextView.setId(id);
+			 nameTextView.setTag(keys[position]);
 			// System.out.println(keys[position]);
 			 if(customers.get(keys[position]))
 			 {

@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import parsing.Parse;
 import parsing.ParseJson;
+import adapter.Customers;
 import adapter.NameAdapter;
 import android.app.Activity;
 import android.content.Intent;
@@ -118,7 +119,7 @@ private ArrayList<String> addedNames;
 			else
 			{
 				System.out.println(m.group());
-				pj.getCustomer_id().put(pj.getCount(), m.group());
+				pj.getCustomer_id().put(pj.getCount(), new Customers(addedNames.get(0),m.group()));
 			}
 		  
 		}
@@ -208,17 +209,19 @@ private ArrayList<String> addedNames;
     {
 	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	    {
-	    	TextView tv= (TextView) findViewById((int)parent.getItemIdAtPosition(position));
-	    	System.out.println("name "+tv.getText());
+	    	//parent.getTag(position)
+	    	//TextView tv= (TextView) findViewById((int)parent.getItemIdAtPosition(position));
+	    	//System.out.println("name "+tv.getText());
+	    	System.out.println("name " +pj.getCustomer_id().get(position).getName() );
 	    	//tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	    	//get name of person clicked on
-	    	System.out.println("id "+pj.getCustomer_id().get(position));
+	    	System.out.println("id "+pj.getCustomer_id().get(position).getCustomer_id());
 	        Intent addBeerIntent = new Intent(NamesActivity.this,AddBeerActivity.class);
 	        addBeerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        //pass values to the addbeer activity
-	        addBeerIntent.putExtra("name", tv.getText());
+	       addBeerIntent.putExtra("name", pj.getCustomer_id().get(position).getName());
 	        addBeerIntent.putExtra("event_id",eventID);
-	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position));
+	        addBeerIntent.putExtra("customer_id",pj.getCustomer_id().get(position).getCustomer_id());
 	        
 	        //start profile activity
 	      	startActivity(addBeerIntent);

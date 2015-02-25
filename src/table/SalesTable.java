@@ -229,6 +229,7 @@ public class SalesTable
 	    else if(colName.equals("quantity"))
 	    {
 	    	row.setQuantity(str);
+	    	row.setOriginal_s_quantity(str);
 	    	 row.setTvQuantity(tv);
 	    }
 	    tv.setTextSize(15);
@@ -241,20 +242,20 @@ public class SalesTable
 	{
 		public void onClick(View v) 
 		{
-			if(rows.get(v.getId()).getQuantity()>0)
-				{
-				//the row was changed
-				rows.get(v.getId()).setChanged(true);
-				//decrement the quantity
-				rows.get(v.getId()).setQuantity(rows.get(v.getId()).getQuantity()-1);
-				//update textview with current quantity
-				rows.get(v.getId()).getTvQuantity().setText(rows.get(v.getId()).getQuantity()+"");
-				
-				//increment the product quantity
-				rows.get(v.getId()).setProduct_quantity(rows.get(v.getId()).getProduct_quantity()+1);
-				//update textview with current quantity
-				rows.get(v.getId()).getTv_p_quantity().setText(rows.get(v.getId()).getProduct_quantity()+"");
-			}
+//			if(rows.get(v.getId()).getQuantity()>0)
+//				{
+//				//the row was changed
+//				rows.get(v.getId()).setChanged(true);
+//				//decrement the quantity
+//				rows.get(v.getId()).setQuantity(rows.get(v.getId()).getQuantity()-1);
+//				//update textview with current quantity
+//				rows.get(v.getId()).getTvQuantity().setText(rows.get(v.getId()).getQuantity()+"");
+//				
+//				//increment the product quantity
+//				rows.get(v.getId()).setProduct_quantity(rows.get(v.getId()).getProduct_quantity()+1);
+//				//update textview with current quantity
+//				rows.get(v.getId()).getTv_p_quantity().setText(rows.get(v.getId()).getProduct_quantity()+"");
+//			}
 		}
 	}
 	
@@ -264,6 +265,7 @@ public class SalesTable
 		{
 			//the row was changed
 			rows.get(v.getId()).setChanged(true);
+			//ensure that user doesnt try to purchase beer with no stock
 			if(rows.get(v.getId()).getProduct_quantity()>0)
 			{
 				//Increment the quantity purchased

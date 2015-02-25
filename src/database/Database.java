@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -47,10 +48,10 @@ public class Database extends AsyncTask<String, String, String>
 
 	public synchronized void buildParameters()
 	{
-		Iterator it = map.entrySet().iterator();
+		Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext())
 	    {
-	        Map.Entry pairs = (Map.Entry)it.next();
+	        Map.Entry<String,String> pairs = (Map.Entry<String,String>)it.next();
 	        //add to parameters
 	        params.add(new BasicNameValuePair((String)pairs.getKey(), (String) pairs.getValue()));
 	        System.out.println("key:" +pairs.getKey() + " = " + pairs.getValue());

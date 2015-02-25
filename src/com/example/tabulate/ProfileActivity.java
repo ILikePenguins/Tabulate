@@ -54,22 +54,22 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    
 	    class PaidListener implements OnClickListener
 	    {
-
 	    	  public void onClick(View v)
 	    	    {
 	    		  addToMap("");
 	    		  map.put("paid", "1");
-	    		  new Database(map,"sales/updatePaidStatus");
+	    		  new Database(map,"sales/updatePaidStatus",ProfileActivity.this);
 	    		  //update that customer paid.
 	    		  System.out.println("id "+getIntent().getExtras().getString("customer_id"));
-	    		  Toast.makeText(getApplicationContext(), customer+" successfully paid",
-	    				   Toast.LENGTH_LONG).show();
+	    		
 	    	    }
 	    }
 	    
 	    public void processFinish(String output)
 		{
 	    	ParseJson parse;
+	    	//System.out.println(output);
+	    	//get # of bottles
 	    	if(output.contains("getBottles"))
 	    	{
 	    		//System.out.println("bottles: "+output);
@@ -78,8 +78,8 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    		parse.changeTextView();
 	    		addToMap("");
 	    		new Database (map,"sales/getPintsPurchasedByCustomer",this);
-
 	    	}
+	    	//get the # of pints
 	    	else if(output.contains("getPints"))
 			{
 	    		//System.out.println("pints "+output);
@@ -88,18 +88,24 @@ public class ProfileActivity extends FragmentActivity implements AsyncResponse
 	    		addToMap("");
 	    		new Database (map,"sales/getTotalUnpaidForCustomer",this);
 			}
-	    	
+	    	//get the total
 	    	else if(output.contains("getTotal"))
 	    	{
 	    		//System.out.println("total "+output);
 	    		parse = new ParseJson(output,total,new String[]{"SUM(s.cost_total)"});
 	    		parse.changeTextView();
 	    	}
-	    	
-	    	
-	    	//System.out.println("output: "+output);
+	    	//get paid status
+	    	else if(output.contains("\"status\":1"))
+	    	{
+	    		  Toast.makeText(getApplicationContext(), customer+" successfully paid",
+	    				   Toast.LENGTH_LONG).show();
+	    	}
+	    	else if(output.contains("\"status\":0"))
+	    	{
+	    		  Toast.makeText(getApplicationContext(),"unable to update "+ customer
+	    				  +" paid status, please try again",
+	    				   Toast.LENGTH_LONG).show();
+	    	}
 		}
-		
-
-		
 }
