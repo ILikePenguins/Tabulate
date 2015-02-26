@@ -71,6 +71,7 @@ public static void addToMap(String name, String keg, String costp,String costb,S
 
 public void processFinish(String output) 
 {
+	System.out.println(output);
 	if(output.contains("*beer/create"))
 		{
 		}

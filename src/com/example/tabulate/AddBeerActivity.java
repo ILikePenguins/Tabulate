@@ -104,7 +104,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 		    	}
 		    	else
 		    		addToMap(value.getProductId()
-		    				,value.getQuantity()+"",value.getProduct_quantity()+"","0");
+		    				,(value.getQuantity()-value.getOriginal_s_quantity())+"",value.getProduct_quantity()+"","0");
 		    	if(count==0)
 		    	{
 			    	new Database (map,"sales/newSale",this);

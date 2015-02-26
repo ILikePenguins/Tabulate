@@ -157,7 +157,7 @@ public class Table
 		try {
 			str = String.valueOf(json_data.getString(colName));
 
-	    tv.setText(str);
+	    tv.setText(str+"  ");
 	    //check if keg or bottle
 	   // checkType(tv,json_data);
 	    tv.setTextSize(15);
