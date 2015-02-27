@@ -12,6 +12,7 @@ import adapter.NameAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -19,7 +20,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import database.AsyncResponse;
 import database.Database;
 
@@ -242,6 +242,18 @@ private ArrayList<String> addedNames;
 	    }
 
 	}
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) 
+        {
+            // do something on back.
+
+        	Intent eventIntent = new Intent(NamesActivity.this,EventActivity.class);
+        	startActivity(eventIntent);
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
 
 	
