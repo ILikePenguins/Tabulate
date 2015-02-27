@@ -56,13 +56,25 @@ private ArrayList<String> addedNames;
         listView= (ListView) findViewById(R.id.name_list);
        
         listView.setOnItemClickListener(new OnItemClickListenerListViewItem());
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
         
-        map.put("name", getIntent().getExtras().getString("name"));
-        //name and date will be sent together, parse then send
-        map.put("date", getIntent().getExtras().getString("date"));
-        //get the event id
-        new Database (map,"events/getEventID",this);
+        if (extras.containsKey("event_id")) 
+        {
+        	eventID=getIntent().getExtras().getString("event_id");
+        	loadCustomers();
+        }
+        
+        else
+        {
+	        map.put("name", getIntent().getExtras().getString("name"));
+	        //name and date will be sent together, parse then send
+	        map.put("date", getIntent().getExtras().getString("date"));
+	        //get the event id
+	        new Database (map,"events/getEventID",this);
+        }
         addedNames=new ArrayList<String>();
+        
        
     }
 

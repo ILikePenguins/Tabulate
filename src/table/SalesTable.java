@@ -264,10 +264,11 @@ public class SalesTable
 		public void onClick(View v) 
 		{
 			//the row was changed
-			rows.get(v.getId()).setChanged(true);
+			
 			//ensure that user doesnt try to purchase beer with no stock
 			if(rows.get(v.getId()).getProduct_quantity()>0)
 			{
+				rows.get(v.getId()).setChanged(true);
 				//Increment the quantity purchased
 				rows.get(v.getId()).setQuantity(rows.get(v.getId()).getQuantity()+1);
 			

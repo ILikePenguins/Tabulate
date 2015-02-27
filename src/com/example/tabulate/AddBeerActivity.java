@@ -10,6 +10,7 @@ import table.SalesTable;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,7 +24,8 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 	LinkedHashMap<String,String> map= new LinkedHashMap<String, String>();
 	private SalesTable table;
 	private Queue<LinkedHashMap<String,String>> q= new LinkedList<LinkedHashMap<String,String>>();
-	
+	private boolean salesClicked;
+	private boolean backClicked;
 	 public void onCreate(Bundle savedInstanceState) 
 	    {
 		 
@@ -78,8 +80,18 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 				|| output.contains("sales/newSale"))
 			{
 			//start the sales activity once all beers are updated
-				System.out.println("starting profile");
-				startProfileActivity();
+				if(salesClicked)
+				{
+					System.out.println("starting profile");
+					salesClicked=false;
+					startProfileActivity();
+				}
+				else if(backClicked)
+				{
+					System.out.println("names activity");
+					backClicked=false;
+					//startNamesActivity();
+				}
 			}
 		else
 			System.out.println("output "+output);
@@ -116,7 +128,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 		    	count++;
 		    }
 		}
-	    if(count==0)
+	    if(count==0 && salesClicked)
 	    	startProfileActivity();
 	}
 	
@@ -126,6 +138,7 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
 
     	  public void onClick(View v)
     	    {
+    		  salesClicked=true;
     		  addChangedRowsToQueue();
     	    }
     }
@@ -141,6 +154,38 @@ public class AddBeerActivity extends FragmentActivity implements AsyncResponse
   		  profileIntent.putExtra("customer_id",getIntent().getExtras().getString("customer_id"));
 	      //start profile activity
 	      startActivity(profileIntent);
+    }
+    
+    
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            // do something on back.
+        	addChangedRowsToQueue();
+        	startNamesActivity();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+//    public void onBackPressed()
+//{
+//    	addChangedRowsToQueue();
+//    	//startNamesActivity();
+//    	
+//    	backClicked=true;
+//    //	return;
+////    	   Intent setIntent = new Intent(Intent.ACTION_MAIN);
+////    	   setIntent.addCategory(Intent.CATEGORY_HOME);
+////    	   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////    	   startActivity(setIntent);
+//    	}
+    
+    public void startNamesActivity()
+    {
+    	
+    	Intent namesIntent = new Intent(AddBeerActivity.this,NamesActivity.class);
+    	namesIntent.putExtra("event_id",getIntent().getExtras().getString("event_id"));
+    	startActivity(namesIntent);
     }
 
 }
